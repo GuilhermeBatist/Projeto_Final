@@ -1,6 +1,6 @@
 (lang dune 3.14)
 
-(name PFC)
+(name Projeto_Final)
 
 (generate_opam_files true)
 
@@ -16,10 +16,10 @@
 (documentation https://url/to/documentation)
 
 (package
- (name PFC)
+ (name Projeto_Final)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml dune)
+ (depends ocaml dune graphics)
  (tags
   (topics "to describe" your project)))
 

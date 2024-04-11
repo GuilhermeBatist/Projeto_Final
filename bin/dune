@@ -1,4 +1,4 @@
-(executable
- (public_name PFC)
- (name main)
- (libraries PFC))
+(executables
+ (public_names PAVL PRBT)
+ (names avl rbt)
+ (libraries graphics ocamlgraph ))
