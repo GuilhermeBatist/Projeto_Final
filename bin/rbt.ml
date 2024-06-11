@@ -33,65 +33,98 @@ let insert x s =
             failwith "RBT insert failed with ins returning leaf" 
 
 
-let rec height = function
+let rec _height = function
   | Leaf -> 0
-  | Node(_, _, l, r) -> 1 + max (height l) (height r)
+  | Node(_, _, l, r) -> 1 + max (_height l) (_height r)
+    
+  open Graph
+  
+  (* Define the graph module *)
+module Vertex = struct
+  type t = int * color
+  let _compare = compare
+  let _hash = Hashtbl.hash
+  let _equal = (=)
+end
+  
+  (* Define the edge label type *)
+  module E = struct
+    type t = color
+    let compare = compare
+    let default = BLACK
+  end
+  
+(* Define the graph module *)
+module G = Imperative.Digraph.AbstractLabeled(Vertex)(E)
 
 
-      
-let draw_rbtree tree =
-  let rec draw x y = function
-    | Leaf -> ()
-    | Node(color, key, left, right) ->
-      let radius = 20 in
-      let gap = 40 in
-      let node_x = x + (height tree) * gap in
-      let node_y = y * gap in
-                
-      (* Desenhar o nó *)
-      Graphics.set_color (match color with RED -> Graphics.red | BLACK -> Graphics.black);
-      Graphics.fill_circle node_x node_y radius;
-      Graphics.set_color Graphics.white;
-      Graphics.draw_circle node_x node_y radius;
-      Graphics.moveto (node_x - 5) (node_y - 5);
-      Graphics.draw_string (string_of_int key);
-                
-      (* Desenhar a linha para o filho esquerdo *)
-      (match left with
-        | Leaf -> ()
-        | Node(_, _, _, _) ->
-          let left_x = node_x - gap in
-          let left_y = node_y - gap in
-            Graphics.set_color Graphics.black;
-            Graphics.moveto node_x node_y;
-            Graphics.lineto left_x left_y);
-                
-  (* Desenhar a linha para o filho direito *)
-            (match right with
-            | Leaf -> ()
-            | Node(_, _, _, _) ->
-              let right_x = node_x + gap in
-              let right_y = node_y - gap in
-                Graphics.set_color Graphics.black;
-                Graphics.moveto node_x node_y;
-                Graphics.lineto right_x right_y);
-                
-              (* Desenhar os filhos *)
-              draw (x + 1) (y - 1) left;
-              draw (x + 1) (y - 1) right
-            in
-            let width = height tree in
-            let total_width = int_of_float ((2. ** float_of_int width -. 1.) *. 40.) in
-            let total_height = height tree in
-            Graphics.open_graph (" " ^ string_of_int total_width ^ "x" ^ string_of_int (total_height * 40));
-            Graphics.clear_graph ();
-            draw 0 (width) tree;
-            ignore (Graphics.wait_next_event [Graphics.Button_down])
-          
- let keys = [9; 5; 10; 0; 6; 11; -1; 1; 2]
- let rbtree = List.fold_left (fun acc key -> insert key acc) Leaf keys
-          
- let () =
-  draw_rbtree rbtree;
-  ignore (Graphics.wait_next_event [Graphics.Button_down])
+(* Define the graphviz module *)
+module Dot = Graphviz.Dot(struct
+  include G
+  let iter_vertex = G.iter_vertex
+  let iter_edges_e = G.iter_edges_e
+  let graph_attributes _ = []
+  let default_vertex_attributes _ = []
+  (* let vertex_attributes v =
+    let color = match snd (G.V.label v) with
+      | RED -> [`Color "red"]
+      | BLACK -> [`Color "black"]
+    in
+    color *)
+    let vertex_attributes v =
+      let color = match snd (G.V.label v) with
+        | RED -> [`Color 0xFF0000; `Penwidth 2.0]  (* Red in RGB *)
+        | BLACK -> [`Color 0x000000; `Penwidth 2.0]  (* Black in RGB *)
+      in
+      color
+  let vertex_name v = string_of_int(fst (G.V.label v))
+  let default_edge_attributes _ = []
+  let edge_attributes (_: E.t) = []
+  let get_subgraph _ = None
+end)
 
+  
+
+
+  
+(* Function to add nodes and edges to the graph *)
+let rec add_to_graph g = function
+  | Leaf -> ()
+  | Node (c, v, l, r) ->
+    let vertex = G.V.create (v, c) in
+    G.add_vertex g vertex;
+    (match l with Node (_, lv, _, _) ->
+      let edge = G.E.create vertex c (G.V.create (lv, c)) in
+      G.add_edge_e g edge | Leaf -> ());
+    (match r with Node (_, rv, _, _) -> 
+      let edge = G.E.create vertex c (G.V.create (rv, c)) in
+      G.add_edge_e g edge | Leaf -> ());
+    add_to_graph g l;
+    add_to_graph g r
+
+    let read_keys_from_file filename =
+      let ic = open_in filename in
+      let rec loop acc =
+          try
+              let line = input_line ic in
+              let key = int_of_string line in
+              loop (key :: acc)
+          with End_of_file ->
+              close_in ic;
+              List.rev acc
+      in
+      loop []
+  
+(* Create the graph and add the nodes and edges *)
+let () =
+  let keys = read_keys_from_file "output.txt" in
+  let rbtree: int rbtree = List.fold_left (fun acc key -> insert key acc) Leaf keys in
+  let g = G.create () in
+  add_to_graph g rbtree;
+  let oc = open_out "graph.dot" in
+  Dot.output_graph oc g;
+  (*convert .dot to .png*)
+  let _ = Sys.command "dot -Tpng graph.dot -o graph.png" in
+  close_out oc
+
+  

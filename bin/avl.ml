@@ -54,46 +54,71 @@ let merge t1 t2 = match t1, t2 with
     | Leaf, t | t, Leaf -> t
     | _ -> balance (min_elt t2) t1 (remove_min_elt t2)
 
-let rec remove x = function
+let rec _remove x = function
     | Leaf -> Leaf
     | Node(v, _, l, r) -> 
         let c = compare x v in
         if c = 0 then merge l r 
-        else if c < 0 then balance v (remove x l)  r 
-        else balance v l (remove x r)
+        else if c < 0 then balance v (_remove x l)  r 
+        else balance v l (_remove x r)
+     
 
-
-(* let rec desenhar_arvore a level prefix =
-    match a with
-    | Leaf -> ()
-    | Node(v, _,l, r) ->
-        Printf.printf "%s%s (%d)\n" (String.make (level * 4) ' ') prefix v;
-        desenhar_arvore l (level + 1) "L-- ";
-        desenhar_arvore r (level + 1) "R-- "
-          
-let desenhar avl_tree =
-    desenhar_arvore avl_tree 0 "Root: " *)
-       
-    let rec graph_of_avl_tree g = function
-  | Leaf -> g
-  | Node(x, _, left, right) ->
-    let g' = graph_of_avl_tree g left in
-    let g'' = graph_of_avl_tree g' right in
-    let node_id = string_of_int x in
-    let g'' = add_vertex g'' node_id in
-    let g''' = match left with
-      | Leaf -> g''
-      | Node(y, _, _, _) -> add_edge g'' (string_of_int y) node_id
-    in
-    let g'''' = match right with
-      | Leaf -> g'''
-      | Node(y, _, _, _) -> add_edge g''' (string_of_int y) node_id
-    in
-    g''''
-
+    
+    module G = Imperative.Digraph.Concrete(struct
+    type t = int
+    let compare = compare
+    let hash = Hashtbl.hash
+    let equal = (=)
+  end)
   
+  module Dot = Graphviz.Dot(struct
+    include G (* use the graph module from above *)
+    let edge_attributes _ = []
+    let default_edge_attributes _ = []
+    let get_subgraph _ = None
+    let vertex_attributes _ = []
+    let vertex_name v = string_of_int v
+    let default_vertex_attributes _ = []
+    let graph_attributes _ = []
+  end)
+        
+    (* Função para abrir a janela e desenhar a árvore *)
+    let draw_avl_tree tree =
+        let g = G.create () in
+        let rec add_edges = function
+          | Leaf -> ()
+          | Node(v, _, l, r) ->
+            G.add_vertex g v;
+            (match l with
+             | Leaf -> ()
+             | Node(lv, _, _, _) -> G.add_edge g v lv; add_edges l);
+            (match r with
+             | Leaf -> ()
+             | Node(rv, _, _, _) -> G.add_edge g v rv; add_edges r)
+        in
+        add_edges tree;
+        let oc = open_out "avl_tree.dot" in
+        Dot.output_graph oc g;
+        close_out oc;
+        ignore (Sys.command "dot -Tpng avl_tree.dot -o avl_tree.png")
+      
+    
 
-let keys = [9; 5; 10; 0; 6; 11; -1; 1; 2] 
-let avl_tree = List.fold_left (fun acc e -> add e acc) Leaf keys   
-let avl_graph = graph_of_avl_tree (create ()) avl_tree 
-let () = Dot.output_graph stdout avl_graph  
+let read_keys_from_file filename =
+            let ic = open_in filename in
+            let rec loop acc =
+                try
+                    let line = input_line ic in
+                    let key = int_of_string line in
+                    loop (key :: acc)
+                with End_of_file ->
+                    close_in ic;
+                    List.rev acc
+            in
+            loop []
+
+            let keys = read_keys_from_file "output.txt"
+   
+let () = 
+    let avl_tree = List.fold_left (fun tree key -> add key tree) Leaf keys in
+    draw_avl_tree avl_tree;

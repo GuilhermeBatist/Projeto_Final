@@ -1,4 +1,4 @@
 (executables
- (public_names PAVL PRBT)
- (names avl rbt)
- (libraries graphics ocamlgraph ))
+ (public_names PAVL PRBT PPrefT PatrT TestGen Read_File)
+ (names avl rbt preft pati testGen read_file)
+ (libraries  graphics str ocamlgraph))
