@@ -1,10 +1,14 @@
+(* Define color type for Red-Black Tree nodes *)
 type color = 
-| RED 
-| BLACK
-type 'a rbtree =
-| Leaf 
-| Node of color * 'a * 'a rbtree * 'a rbtree 
+  | RED 
+  | BLACK
 
+(* Define the Red-Black Tree data structure *)
+type 'a rbtree =
+  | Leaf 
+  | Node of color * 'a * 'a rbtree * 'a rbtree 
+
+(* Helper function to check if an element exists in the tree *)
 let rec _mem x = function
   | Leaf -> false
   | Node (_, y, l, r) ->
@@ -12,6 +16,7 @@ let rec _mem x = function
     else if x > y then _mem x r
     else true
 
+(* Function to balance the tree after insertion *)
 let balance = function
     | BLACK, z, Node (RED, y, Node (RED, x, a, b), c), d
     | BLACK, z, Node (RED, x, a, Node (RED, y, b, c)), d
@@ -20,26 +25,47 @@ let balance = function
         Node (RED, y, Node (BLACK, x, a, b), Node (BLACK, z, c, d))
     | a, b, c, d -> Node (a, b, c, d)
 
+(* Function to insert a new element into the tree *)
 let insert x s =
     let rec ins = function
-        | Leaf -> Node (RED, x, Leaf, Leaf)
+        | Leaf -> Node (RED, x, Leaf, Leaf)  (* Insert new RED node *)
         | Node (color, y, a, b) as s ->
-            if x < y then balance (color, y, ins a, b)
-            else if x > y then balance (color, y, a, ins b)
-            else s in
+            if x < y then balance (color, y, ins a, b)  (* Balance after insertion on left *)
+            else if x > y then balance (color, y, a, ins b)  (* Balance after insertion on right *)
+            else s in  (* Element already exists, return the tree as is *)
         match ins s with
-          | Node (_, y, a, b) -> Node (BLACK, y, a, b)
-          | Leaf -> (* guaranteed to be nonempty *)
-            failwith "RBT insert failed with ins returning leaf" 
+          | Node (_, y, a, b) -> Node (BLACK, y, a, b)  (* Ensure the root is always black *)
+          | Leaf -> failwith "RBT insert failed with ins returning leaf"  (* This should never happen *)
 
-
+(* Helper function to calculate the height of the tree *)
 let rec _height = function
   | Leaf -> 0
   | Node(_, _, l, r) -> 1 + max (_height l) (_height r)
-    
-  open Graph
+
+let delete x s = 
+  let rec del = function
+    | Leaf -> Leaf
+    | Node (color, y, a, b)  ->
+      if x < y then balance (color, y, del a, b)
+      else if x > y then balance (color, y, a, del b)
+      else match a, b with
+        | Leaf, _ -> b
+        | _, Leaf -> a
+        | _, _ -> let rec min = function
+          | Node (_, x, Leaf, _) -> x
+          | Node (_, _, l, _) -> min l
+          | Leaf -> failwith "RBT delete failed with min returning leaf"
+          in
+          let m = min b in
+          balance (color, m, a, del b)
+  in
+  match del s with
+    | Node (_, y, a, b) -> Node (BLACK, y, a, b)
+    | Leaf -> Leaf  
+
+ open Graph
   
-  (* Define the graph module *)
+(* Define the graph module for visualization *)
 module Vertex = struct
   type t = int * color
   let _compare = compare
@@ -47,47 +73,36 @@ module Vertex = struct
   let _equal = (=)
 end
   
-  (* Define the edge label type *)
-  module E = struct
-    type t = color
-    let compare = compare
-    let default = BLACK
-  end
+(* Define the edge label type *)
+module E = struct
+  type t = color
+  let compare = compare
+  let default = BLACK
+end
   
 (* Define the graph module *)
 module G = Imperative.Digraph.AbstractLabeled(Vertex)(E)
 
-
-(* Define the graphviz module *)
+(* Define the graphviz module for graph visualization *)
 module Dot = Graphviz.Dot(struct
   include G
   let iter_vertex = G.iter_vertex
   let iter_edges_e = G.iter_edges_e
   let graph_attributes _ = []
   let default_vertex_attributes _ = []
-  (* let vertex_attributes v =
+  let vertex_attributes v =
     let color = match snd (G.V.label v) with
-      | RED -> [`Color "red"]
-      | BLACK -> [`Color "black"]
+      | RED -> [`Color 0xFF0000; `Penwidth 2.0]  (* RED in RGB *)
+      | BLACK -> [`Color 0x000000; `Penwidth 2.0]  (* BLACK in RGB *)
     in
-    color *)
-    let vertex_attributes v =
-      let color = match snd (G.V.label v) with
-        | RED -> [`Color 0xFF0000; `Penwidth 2.0]  (* Red in RGB *)
-        | BLACK -> [`Color 0x000000; `Penwidth 2.0]  (* Black in RGB *)
-      in
-      color
+    color
   let vertex_name v = string_of_int(fst (G.V.label v))
   let default_edge_attributes _ = []
   let edge_attributes (_: E.t) = []
   let get_subgraph _ = None
 end)
-
   
-
-
-  
-(* Function to add nodes and edges to the graph *)
+(*Function to add nodes and edges to the graph *)
 let rec add_to_graph g = function
   | Leaf -> ()
   | Node (c, v, l, r) ->
@@ -100,9 +115,10 @@ let rec add_to_graph g = function
       let edge = G.E.create vertex c (G.V.create (rv, c)) in
       G.add_edge_e g edge | Leaf -> ());
     add_to_graph g l;
-    add_to_graph g r
-
-    let read_keys_from_file filename =
+    add_to_graph g r 
+    
+(* Function to read keys from a file and return them as a list *)
+let read_keys_from_file filename =
       let ic = open_in filename in
       let rec loop acc =
           try
@@ -115,7 +131,14 @@ let rec add_to_graph g = function
       in
       loop []
   
-(* Create the graph and add the nodes and edges *)
+let print_tree_to_file tree file =
+  let oc = open_out file in
+  Dot.output_graph oc tree;
+  (* Convert .dot to .png using the dot tool *)
+  let _ = Sys.command ("dot -Tpng" ^ file ^ " -o rbt.png") in
+  close_out oc
+
+(* Main function to create the graph and output it as a .dot and .png file *)
 let () =
   let keys = read_keys_from_file "output.txt" in
   let rbtree: int rbtree = List.fold_left (fun acc key -> insert key acc) Leaf keys in
@@ -123,8 +146,7 @@ let () =
   add_to_graph g rbtree;
   let oc = open_out "graph.dot" in
   Dot.output_graph oc g;
-  (*convert .dot to .png*)
-  let _ = Sys.command "dot -Tpng graph.dot -o graph.png" in
+  (* Convert .dot to .png using the dot tool *)
+  let _ = Sys.command "dot -Tpng graph.dot -o rbt.png" in
   close_out oc
-
-  
+  let () = Printf.printf "Graph created\n" 
