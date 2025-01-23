@@ -13,16 +13,56 @@ let height = function
 
 (* Helper function to create a new node with correct height *)
 let node v l r =
-  Node (v, (1 + max (height l) (height r)), l, r)
+  Node (v, (1 + max (height l) (height r)), l, r)(*isto vai para apendice*)
+
+(* Define the graph module for visualization *)
+module G = Imperative.Digraph.Concrete(struct
+  type t = int
+  let compare = compare
+  let hash = Hashtbl.hash
+  let equal = (=)
+end)
+
+(* Define the graphviz module for graph visualization *)
+module Dot = Graphviz.Dot(struct
+  include G (* Use the graph module from above *)
+  let edge_attributes _ = []
+  let default_edge_attributes _ = []
+  let get_subgraph _ = None
+  let vertex_attributes _ = []
+  let vertex_name v = string_of_int v
+  let default_vertex_attributes _ = []
+  let graph_attributes _ = []
+end)
+
+(* Function to visualize the AVL tree using Graphviz *)
+let draw_avl_tree tree n=
+  let g = G.create () in
+  let rec add_edges = function
+    | Leaf -> ()
+    | Node(v, _, l, r) ->
+      G.add_vertex g v;
+      (match l with
+       | Leaf -> ()
+       | Node(lv, _, _, _) -> G.add_edge g v lv; add_edges l);
+      (match r with
+       | Leaf -> ()
+       | Node(rv, _, _, _) -> G.add_edge g v rv; add_edges r)
+  in
+  add_edges tree;
+  let oc = open_out "avl_tree.dot" in
+  Dot.output_graph oc g;
+  close_out oc;
+  ignore (Sys.command ("dot -Tpng avl_tree.dot -o avl_test_"^ string_of_int(n) ^".png"))
 
 (* Function to balance the AVL tree during insertion or deletion *)
-let balance v l r =
+let balance v l r  =
   let hl = height l in
   let hr = height r in
   if hl > 1 + hr then
     match l with
     | Node(lv, _, ll, lr) when height ll >= height lr ->
-        node lv ll (node v lr r)
+        node lv ll (node v lr r) 
     | Node(vl, _, ll, Node (lrv, _, lrl, lrr)) ->
         node lrv (node vl ll lrl) (node v lrr r)
     |_ ->
@@ -81,47 +121,6 @@ let rec remove x = function
       else if c < 0 then balance v (remove x l) r
       else balance v l (remove x r)
 
-(* Define the graph module for visualization *)
-module G = Imperative.Digraph.Concrete(struct
-  type t = int
-  let compare = compare
-  let hash = Hashtbl.hash
-  let equal = (=)
-end)
-
-(* Define the graphviz module for graph visualization *)
-module Dot = Graphviz.Dot(struct
-  include G (* Use the graph module from above *)
-  let edge_attributes _ = []
-  let default_edge_attributes _ = []
-  let get_subgraph _ = None
-  let vertex_attributes _ = []
-  let vertex_name v = string_of_int v
-  let default_vertex_attributes _ = []
-  let graph_attributes _ = []
-end)
-
-(* Function to visualize the AVL tree using Graphviz *)
-let draw_avl_tree tree n=
-  let g = G.create () in
-  let rec add_edges = function
-    | Leaf -> ()
-    | Node(v, _, l, r) ->
-      G.add_vertex g v;
-      (match l with
-       | Leaf -> ()
-       | Node(lv, _, _, _) -> G.add_edge g v lv; add_edges l);
-      (match r with
-       | Leaf -> ()
-       | Node(rv, _, _, _) -> G.add_edge g v rv; add_edges r)
-  in
-  add_edges tree;
-  let oc = open_out "avl_tree.dot" in
-  Dot.output_graph oc g;
-  close_out oc;
-  ignore (Sys.command ("dot -Tpng avl_tree.dot -o avl_tree_"^ string_of_int(n) ^".png"))
-  
-
 (* Function to read keys from a file and return them as a list *)
 let read_keys_from_file filename =
   let ic = open_in filename in
@@ -136,12 +135,14 @@ let read_keys_from_file filename =
   in
   loop []
 
+
+  
 (* Main function to create the AVL tree and visualize it *)
 let () =
-  let n = 0 in 
   let keys = read_keys_from_file "output.txt" in
-  let avl_tree = List.fold_left (fun tree key -> add key tree) Leaf keys in
-  draw_avl_tree avl_tree n;
+  let n, avl_tree = List.fold_left (fun (i,tree) key ->let t = add key tree in draw_avl_tree t i; (i+1),t ) (0,Leaf) keys in
   (*remove the eigth element of keys from avl*)
   let avl_tree = remove (List.nth keys 8) avl_tree  in
-  draw_avl_tree avl_tree (n+1);
+  draw_avl_tree avl_tree (n);
+
+ 

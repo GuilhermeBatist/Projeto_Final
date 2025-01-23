@@ -1,9 +1,9 @@
-(* Define color type for Red-Black Tree nodes *)
+(* Define color type for RED-BLACK Tree nodes *)
 type color = 
   | RED 
   | BLACK
 
-(* Define the Red-Black Tree data structure *)
+(* Define the RED-BLACK Tree data structure *)
 type 'a rbtree =
   | Leaf 
   | Node of color * 'a * 'a rbtree * 'a rbtree 
@@ -16,54 +16,7 @@ let rec _mem x = function
     else if x > y then _mem x r
     else true
 
-(* Function to balance the tree after insertion *)
-let balance = function
-    | BLACK, z, Node (RED, y, Node (RED, x, a, b), c), d
-    | BLACK, z, Node (RED, x, a, Node (RED, y, b, c)), d
-    | BLACK, x, a, Node (RED, z, Node (RED, y, b, c), d)
-    | BLACK, x, a, Node (RED, y, b, Node (RED, z, c, d)) ->
-        Node (RED, y, Node (BLACK, x, a, b), Node (BLACK, z, c, d))
-    | a, b, c, d -> Node (a, b, c, d)
-
-(* Function to insert a new element into the tree *)
-let insert x s =
-    let rec ins = function
-        | Leaf -> Node (RED, x, Leaf, Leaf)  (* Insert new RED node *)
-        | Node (color, y, a, b) as s ->
-            if x < y then balance (color, y, ins a, b)  (* Balance after insertion on left *)
-            else if x > y then balance (color, y, a, ins b)  (* Balance after insertion on right *)
-            else s in  (* Element already exists, return the tree as is *)
-        match ins s with
-          | Node (_, y, a, b) -> Node (BLACK, y, a, b)  (* Ensure the root is always black *)
-          | Leaf -> failwith "RBT insert failed with ins returning leaf"  (* This should never happen *)
-
-(* Helper function to calculate the height of the tree *)
-let rec _height = function
-  | Leaf -> 0
-  | Node(_, _, l, r) -> 1 + max (_height l) (_height r)
-
-let delete x s = 
-  let rec del = function
-    | Leaf -> Leaf
-    | Node (color, y, a, b)  ->
-      if x < y then balance (color, y, del a, b)
-      else if x > y then balance (color, y, a, del b)
-      else match a, b with
-        | Leaf, _ -> b
-        | _, Leaf -> a
-        | _, _ -> let rec min = function
-          | Node (_, x, Leaf, _) -> x
-          | Node (_, _, l, _) -> min l
-          | Leaf -> failwith "RBT delete failed with min returning leaf"
-          in
-          let m = min b in
-          balance (color, m, a, del b)
-  in
-  match del s with
-    | Node (_, y, a, b) -> Node (BLACK, y, a, b)
-    | Leaf -> Leaf  
-
- open Graph
+open Graph
   
 (* Define the graph module for visualization *)
 module Vertex = struct
@@ -103,19 +56,94 @@ module Dot = Graphviz.Dot(struct
 end)
   
 (*Function to add nodes and edges to the graph *)
-let rec add_to_graph g = function
-  | Leaf -> ()
-  | Node (c, v, l, r) ->
-    let vertex = G.V.create (v, c) in
-    G.add_vertex g vertex;
-    (match l with Node (_, lv, _, _) ->
-      let edge = G.E.create vertex c (G.V.create (lv, c)) in
-      G.add_edge_e g edge | Leaf -> ());
-    (match r with Node (_, rv, _, _) -> 
-      let edge = G.E.create vertex c (G.V.create (rv, c)) in
-      G.add_edge_e g edge | Leaf -> ());
-    add_to_graph g l;
-    add_to_graph g r 
+let draw_rb_tree t n = 
+  let g = G.create () in
+  let rec add_edges = function
+    | Leaf -> ()
+    | Node (color, x, l, r) ->
+        let u = G.V.create (x, color) in
+        G.add_vertex g u;
+        begin match l with
+          | Leaf -> ()
+          | Node (_, y, _, _) ->
+              let v = G.V.create (y, color) in
+              G.add_vertex g v;
+              G.add_edge g u v
+        end;
+        begin match r with
+          | Leaf -> ()
+          | Node (_, z, _, _) ->
+              let v = G.V.create (z, color) in
+              G.add_vertex g v;
+              G.add_edge g u  v
+        end;
+        add_edges l;
+        add_edges r
+  in
+  add_edges t;
+  let oc = open_out "rbt.dot" in
+  Dot.output_graph oc g; 
+  close_out oc;
+  ignore (Sys.command ("dot -Tpng rbt.dot -o img/rbt/rbt_test_"^ string_of_int(n) ^".png"))
+
+
+(* Function to balance the tree after insertion *)
+let balance (color, y, a, b) t n = 
+  match color, y, a, b with
+  | BLACK, z, Node (RED, y, Node (RED, x, a, b), c), d
+  | BLACK, z, Node (RED, x, a, Node (RED, y, b, c)), d
+  | BLACK, x, a, Node (RED, z, Node (RED, y, b, c), d)
+  | BLACK, x, a, Node (RED, y, b, Node (RED, z, c, d)) ->
+     let nodo = Node (RED, y, Node (BLACK, x, a, b), Node (BLACK, z, c, d)) in
+      draw_rb_tree nodo n; 
+      nodo
+  | a, b, c, d -> let node = Node (a, b, c, d) in draw_rb_tree node n; node
+
+
+(* Function to insert a new element into the tree *)
+(**
+    @param x: the element to be inserted
+    @param tree: the tree to insert the element
+    @param n: the index of iteration (i.e. change version) of the tree
+*)
+let insert x tree n =
+    let rec ins = function
+        | Leaf -> Node (RED, x, Leaf, Leaf)  
+        | Node (color, y, a, b) as t ->
+            if x < y then balance (color, y, ins a, b) tree n 
+            else if x > y then balance (color, y, a, ins b) tree n
+            else t in 
+  match ins tree with
+    | Node (_, y, a, b) -> Node (BLACK, y, a, b)  
+    | Leaf -> failwith "RBT insert failed with ins returning leaf"  (* guaranteed to be nonempty *)
+
+(* Helper function to calculate the height of the tree *)
+let rec _height = function
+  | Leaf -> 0
+  | Node(_, _, l, r) -> 1 + max (_height l) (_height r)
+
+let delete x s n = 
+  let rec del = function
+    | Leaf -> Leaf
+    | Node (color, y, a, b)  ->
+      if x < y then balance (color, y, del a, b) x n
+      else if x > y then balance (color, y, a, del b) x n
+      else match a, b with
+        | Leaf, _ -> b
+        | _, Leaf -> a
+        | _, _ -> let rec min = function
+          | Node (_, x, Leaf, _) -> x
+          | Node (_, _, l, _) -> min l
+          | Leaf -> failwith "RBT delete failed with min returning leaf"
+          in
+          let m = min b in
+          balance (color, m, a, del b) x n
+  in
+  match del s with
+    | Node (_, y, a, b) -> Node (BLACK, y, a, b)
+    | Leaf -> Leaf  
+
+   
     
 (* Function to read keys from a file and return them as a list *)
 let read_keys_from_file filename =
@@ -131,22 +159,15 @@ let read_keys_from_file filename =
       in
       loop []
   
-let print_tree_to_file tree file =
-  let oc = open_out file in
-  Dot.output_graph oc tree;
-  (* Convert .dot to .png using the dot tool *)
-  let _ = Sys.command ("dot -Tpng" ^ file ^ " -o rbt.png") in
-  close_out oc
+let delete_with_check x s n =
+  if _mem x s then delete x s n
+  else s
 
 (* Main function to create the graph and output it as a .dot and .png file *)
-let () =
+let () =  
   let keys = read_keys_from_file "output.txt" in
-  let rbtree: int rbtree = List.fold_left (fun acc key -> insert key acc) Leaf keys in
-  let g = G.create () in
-  add_to_graph g rbtree;
-  let oc = open_out "graph.dot" in
-  Dot.output_graph oc g;
-  (* Convert .dot to .png using the dot tool *)
-  let _ = Sys.command "dot -Tpng graph.dot -o rbt.png" in
-  close_out oc
-  let () = Printf.printf "Graph created\n" 
+    let n,rbtree = List.fold_left (fun (i,acc) key -> let t = insert key acc i in draw_rb_tree t i; (i+1),t) (0,Leaf) keys in
+      let rbtree =  insert 27 rbtree n in
+        draw_rb_tree rbtree n
+  
+

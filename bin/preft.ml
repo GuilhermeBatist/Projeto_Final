@@ -1,8 +1,10 @@
+(* Module type defining the interface for a letter *)
 module type Letter = sig
   type t 
   val compare: t -> t -> int 
 end
 
+(* Module type defining the interface for a persistent set *)
 module type PersistentSet = sig 
   type elt 
   type t
@@ -14,6 +16,7 @@ module type PersistentSet = sig
   val compare : t -> t -> int 
 end
 
+(* Module implementing a persistent set using a prefix tree (trie) *)
 module Make(L : Letter) : PersistentSet with type elt = L.t list =
 struct
   
@@ -40,7 +43,7 @@ struct
 
   let rec remove x t =
     match x with
-    | [] -> if not t.word then t else {t with word = false}  (* Corrected the condition here *)
+    | [] -> if not t.word then t else {t with word = false}  
     | i :: l -> try
       let s  = remove l (M.find i t.branches) in 
       let new_branches = 
@@ -68,14 +71,14 @@ struct
 
   type 'a b = { value : 'a option ; branches : 'a b M.t}  
 
-  let rec _find x t =
+  let rec find x t =
     match x, t.value  with
     | [], None -> raise Not_found
     | [], Some v -> v
-    | i::l , _ -> _find l (M.find i t.branches)
+    | i::l , _ -> find l (M.find i t.branches)
 
 end 
-
+(* Function to read words from a file and return them as a list *)
 let read_words_from_file filename =
     let ic = open_in filename in
     let rec loop acc =
@@ -88,23 +91,26 @@ let read_words_from_file filename =
     in
     loop []
 
+(* Function to read keys from a file, converting each word into a list of characters *)
 let read_keys_from_file filename =  
   let words = read_words_from_file filename in
   List.map (fun x -> String.to_seq x |> List.of_seq) words
 
+(* Module L implementing the Letter interface for characters *)
 module L = struct
   type t = char
-  (* Explicitly defining compare, even though it's the same as Stdlib.compare, for clarity and consistency with the Letter module's requirements. *)
   let compare = Stdlib.compare  
 end
 
+(* Creating a trie with the type of elements being lists of characters *)
 module Trie = Make(L) 
 
+(* Function to add keys to the prefix tree *)
 let create_prefix_tree keys tree = 
   Trie.add keys tree  
 
-open Graph
-
+  (* Graph module setup for visualization *)
+(* open Graph
 module Vertex = struct
   type t = char list
   let compare = Stdlib.compare
@@ -131,35 +137,43 @@ module Dot = Graph.Graphviz.Dot(struct
   let vertex_attributes _ = []
   let default_vertex_attributes _ = []
   let graph_attributes _ = []
-end)
+end) *)
 
-let add_to_graph g keys = 
-  let rec add_to_graph' g keys = 
-    match keys with
-    | [] -> ()
-    | x::xs -> 
-      let v = G.V.create x in
-      G.add_vertex g v;
-      match xs with
-      | [] -> ()
-      | y::ys -> 
-        let v' = G.V.create y in
-        G.add_vertex g v';
-        G.add_edge g v v';
-        add_to_graph' g (y::ys)
+
+(* Function to add trie elements to the graph *)
+(* let add_to_graph g trie = 
+  let rec add_to_graph' g trie prefix = 
+    if trie.Trie.word then G.add_vertex g prefix;
+    Trie.M.iter (fun k v -> 
+      G.add_edge g prefix (k::prefix);
+      add_to_graph' g v (k::prefix)
+    ) trie.Trie.branches
   in
-  add_to_graph' g keys
+  add_to_graph' g trie [] *)
 
-
+ (* Main function to create a graph from the trie and output it to a file *)
+ 
 let () = 
-  let keys = read_keys_from_file "SW_A_NEW_HOPE_palavras.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
+  let keys = read_keys_from_file "Joey@fakeplagio-palavras.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
   let trie = List.fold_left (fun acc s -> create_prefix_tree  s acc) Trie.empty keys  in
-  let g = G.create () in
+  let word = "evaluation" in 
+    let explode s = 
+      List.init (String.length s) (String.get s) in 
+      let nboom = explode word in
+  let found = Trie.mem nboom trie in
+  let w2 = "landscapes" in
+  let boom = explode w2 in
+  let trie = Trie.remove boom trie in
+  let rem = Trie.mem boom trie in
+  Printf.printf "Word %s was found: %b.\n Word %s was removed:%b\n" word found w2 (not rem);
+
+
+  (* let g = G.create () in
   add_to_graph g keys;
   let oc = open_out "prefT.dot" in
   Dot.output_graph oc g;
   close_out oc;
-  ignore (Sys.command ("dot -Tpng prefT.dot -o prefix_tree.png"))
+  ignore (Sys.command ("dot -Tpng prefT.dot -o prefix_tree.png")) *)
   (* create tree or print tree or save to file *)
   
   (* Graph visualization code is commented out and should be implemented or removed based on requirements. *)

@@ -1,0 +1,643 @@
+The current technological evolution is experiencing an increasing
+need for emergent 3D data formats. 3D information can be represented
+in multiple formats like point clouds, meshes, holograms, volumetric
+imaging, imaging slicing or indirectly using multi-view systems. Among
+these formats point clouds have emerged as one of the most popular
+methods.
+Point clouds consist of a set of Cartesian coordinates (𝑥, 𝑦, 𝑧) representing each point, with a list of attributes associated with each
+coordinate, such as an RGB component, reflective information, physical
+sensor information, or normal vectors. As with any 3D representation,
+point clouds are usually represented by huge amounts of data, allowing
+an extremely accurate representation of an object or scene, making
+them a very powerful representation model. Hence, most applications
+making use of this type of data can benefit from efficient coding
+solutions that provide the means for efficient processing, storage, and
+transmission. The main contributions of this paper are as follows:
+• Report on a subjective quality evaluation using four different
+relevant codecs.
+• Benchmarking of full-reference, reduced-reference and noreference metrics
+• Analyze the influence of the normals computation methodology
+and parameterization.
+This paper aims to report the knowledge gained on colored static
+point cloud quality evaluation under coding distortions, as well as the
+performance of objective point cloud quality metrics. Furthermore, up
+to the best of the authors knowledge, it is the first work that directly
+compares full-reference, reduced-reference and no-reference metrics,
+using two different datasets. The subjective quality study reported by
+Prazeres et al. [1] (referred to as EI2022 in the remainder of the
+paper) is expanded by increasing the number of evaluated metrics,
+and conducting more in-depth benchmarking. Furthermore, results are
+generalized using the BASICS database [2]. Additionally, more details
+on the subjective quality evaluation protocol, as well as visual examples
+are provided.
+Six point clouds were carefully selected and encoded with four
+relevant codecs. The subjective quality evaluation methodology is described, and the performance of several commonly used objective
+evaluation metrics is analyzed under different types of compression
+artifacts. Moreover, the considered metrics are benchmarked on the BASICS validation dataset [2]. This is a large database that also contains
+a deep-learning codec used for metrics validation. With this dataset,
+the results can be generalized, and better conclusions can be drawn.
+In particular, the study considers artifacts created by deep learning
+technology, which tend to be different from those created with octree
+or projection-based codecs.
+After this introduction, the paper reports a short state-of-the art
+description of point cloud coding, as well as subjective and objective
+quality evaluation (Section 2). Afterward, the description of the quality
+study (Section 3), which includes the dataset selection, the subjective
+quality evaluation, the objective quality study, and metrics benchmarking, is presented. Finally, the results discussion (Section 4) provides
+some insights on the results of the conducted study and the final
+comments section (Section 5) summarizes the findings of the study, as
+well as providing recommendations for further studies.
+2. Related work
+2.1. Point cloud coding
+The most traditional coding methods for point clouds are based on
+the octree pruning method [3]. Recently, MPEG defined the Geometrybased Point Cloud Compression (G-PCC) [4], for static point clouds
+based on the octree point cloud representation. G-PCC also allows the
+use of the trisoup method based on surface reconstruction for geometry
+compression. Regarding the point cloud attributes, they are compressed
+using either Region Adaptive Hierarchical Transform (RAHT) [5] or the
+predicting/lifting (predlift) transform [4].
+Point cloud coding can also be achieved by encoding the point
+cloud projections, which can be coded by any image coding codec.
+MPEG also explored that approach, resulting in the Video-based Point
+Cloud Compression (V-PCC) [4] defined for dynamic point clouds. VPCC relies on HEVC, or more recently, VVC, in order to encode 2D
+projections of a given point cloud. Despite being developed for dynamic
+point clouds, its intra-coding has been revealed to be the most efficient
+for static point cloud coding [1,6].
+Following the good performance in image coding, several machine
+learning-based coding solutions for point clouds have been proposed
+recently [7–14]. The stability of machine-learning codecs was studied [15] using the PSNR D1 [16] metric to compute a set of point clouds
+across three training sessions conducted under the same circumstances.
+Machine learning solutions usually cause distortions represented by
+empty spaces in the point cloud geometry [17], which are quite different from those caused by common codecs. Hence, there is a need to
+analyze the reliability of the quality methodologies for learning-based
+codecs. For this study, four relevant point cloud coding solutions were
+selected.
+The Video Point Cloud Compression (V-PCC) [4], uses HEVC to
+encode the generated projections and uses intracoding. The Geometry
+Point Cloud Compression (G-PCC) [4], with the octree method for
+geometry encoding and the lifting transform for texture encoding.
+Considering the work presented by Perry et al. [6], it was decided
+to use the predlift transform. The Resolution Scalable Deep Learning
+Point Cloud Compression (RS-DLPCC) [8] makes use of deep learning
+technology to compress the point cloud geometry. A latent representation of a point cloud is computed by an autoencoder framework.
+The interlaced block creation makes the scalability feature possible.
+The point cloud is divided into superblocks that are further divided by
+interlaced downsampling. This creates eight interlaced blocks for each
+defined superblock. The resulting blocks are then coded separately,
+enabling random access.
+Draco1 was developed by Google. The codec uses KD-Tree [18] in
+order to organize 3D data efficiently. The codec continuously splits the
+point cloud from the center, modifying the axes in each direction.
+The four codecs represent the diversity of coding artifacts usually
+created by the lossy coding of point clouds. G-PCC is based on octree
+decomposition, V-PCC compresses the point cloud projections, and RSDLPCC creates typical distortions that appear in deep learning-based
+codecs. Even though Draco was mainly developed for meshes, its performance on static [19] and dynamic point clouds has been studied [20,
+21]. For this reason, the codec was included in this evaluation.
+2.2. Subjective quality evaluation
+The research community has been extremely active in studying
+point cloud quality evaluation methodologies and conducting research
+on different coding methodologies and setups. Studies were conducted
+to establish quality methodologies for geometry-only methods [22,23],
+graph-based [24] and projection-based [25]. Honglei et al. conducted
+subjective evaluations on the MPEG test model V-PCC and also early
+proposals that led to the final version of G-PCC. A study on the
+MPEG codecs V-PCC and G-PCC before standardization was also conducted [26]. In 2020, a subjective and objective quality evaluation
+comparing the MPEG codecs was conducted [6], using a 2D setup. It
+was reported that V-PCC was the best performing codec. Recently, a
+subjective quality evaluation using 3D stereoscopic visualization [27]
+was compared with 2D visualization, revealing high correlations between both evaluations and no statistical differences. Moreover, a
+subjective quality evaluation targeting machine-learning-based coding
+solutions was reported [17]. In early 2022, a quality assessment study
+was performed to support the JPEG Pleno point cloud coding CfP [28].
+This study aimed to evaluate the current state-of-the-art point cloud
+solutions, analyze the stability of the subjective quality assessment
+methodologies, and evaluate the performance of objective metrics.
+Subjective quality evaluation studies also lead to the definition of point
+cloud quality assessment databases, commonly used to benchmark
+point cloud quality metrics [29–32]. Crowdsourcing methodologies
+have also been studied [2,33] as a method of subjective evaluation.
+2.3. Objective quality evaluation
+Objective quality evaluation metrics are quite important for coding
+method developers, as subjective evaluation is time-consuming and
+typically requires careful planning and design.
+Objective quality evaluation metrics can be divided into fullreference (the distorted data is compared with the original data),
+reduced-reference (features extracted from the distorted and original
+data are compared), and no-reference (only the distorted data is used
+for the quality estimation). Furthermore, in the case of point clouds, the
+quality evaluation metrics can also be divided into three categories:
+geometry only (only use the geometry information for the quality
+estimation), color only (only use the color attributes), and geometry
+plus color (use both geometry and color attributes). Furthermore,
+objective quality evaluation metrics can be classified as image-based
+or model-based metrics specifically developed for point cloud quality
+evaluation [34]. For instance, image-based metrics like PSNR and SSIM
+can be computed using a point cloud representative of 2D views.
+The aforementioned study [6] evaluated a group of point-based metrics and concluded that point to point and point to plane metrics [16]
+using the mean squared error (MSE) were the best performing ones and
+provided a good representation of the subjective evaluation. Later, a
+benchmarking study using a 2D experimental setup for the subjective
+assessment was reported [35], which included a broader selection of
+objective quality metrics. The PCQM [36] and PointSSIM [37] showed
+the best performances in terms of correlation with the Mean Opinion
+Score (MOS). Moreover, the image metric Multiscale Structural Similarity index [38] (MS-SSIM) computed over the video generated for the
+2-D visualization of the point cloud also revealed a good representation
+of the subjective evaluation.
+The metrics considered for this evaluation are the Point to Point
+(D1) [16], Point to Plane (D2) [16], Plane to Plane [39], the PSNR
+MSE YUV metric (Color PSNR of the luminance channel and each
+chroma component), the Point Cloud Structural Similarity (PointSSIM)
+metric [37], the Point Cloud Quality Metric (PCQM) [36], the Point
+to Distribution Metric (P2Dist) [40], the Reduced Reference Point
+Cloud Metric (PCMRR) [41], the GraphSIM Metric [42] and the Color
+Histogram Metric [43]. Several no-reference metrics were also considered for this study, namely the IT-PCQA [44], MM-PCQA [45],
+ResSCNN [46], VQA-PC [47] and NR-3DQA [48]. While there are
+several other works available in the literature [49–52], the selected
+ones currently have a public implementation. A short revision of these
+metrics is presented in Section 3.4.
+Some objective evaluation methods depend on the normals calculation. Taking this in consideration, two different computation methods
+were tested as in [53], namely the quadric fitting of Cloud Compare
+(CC), using a radius (𝑅) of five, ten, and twenty [54], and the K
+Nearest Neighbor (KNN) with K of six, ten, and eighteen [55] using
+MeshLab (ML) plane fitting. Furthermore, image metrics were also considered, namely the FSIM and FSIMc [56], SSIM [57] and MSSIM [38],
+VIFp [58] and PSNR metrics.
+3. Quality evaluation study
+The methodology reported by Perry et al. [6] was selected for this
+study, as it has been proven to be very effective on the subjective
+evaluation of point clouds. To summarize, the subjects are shown a set
+of videos showing both the reference and distorted point clouds. Prior
+to the evaluation, the subjects visualized a small sequence of videos
+depicting a point cloud not included in the evaluation. The collected
+mean opinion scores (MOS) are then aggregated and compared to
+the predicted MOS values by the objective quality metrics. General
+information regarding the subjective evaluation is found in Section 3.3,
+while Section 3.5 reports the results of the objective evaluation, presenting both global and individual correlations and the study on the
+normal vectors influence.
+3.1. Selected data
+Fig. 1 represents the set of six point clouds containing geometry
+and texture information used in this study. The set consists of frame
+0690 of the Soldier and frame 1300 of the Longdress dynamic point
+clouds representing human figures,2 Romanoillamp and Bumbameuboi
+point clouds,3 and Rhetorician and Guanyin point clouds, from the EPFL
+dataset,4
+representing cultural heritage artifacts. Moreover, frame 1550
+of the Redandblack point cloud5 was selected for the training session
+conducted prior to the subjective evaluations. This set includes only
+point clouds representing objects, as this was the main target of the
+tested codecs.
+Table 1 depicts point cloud characteristics, namely the point cloud
+sparsity, color gamut volume, and standard deviation of each color
+channel of the YCbCr color space. The sparsity is defined as the average
+distance between each point and its 20 nearest neighbors, averaged
+over the entire point cloud. The color gamut volume is defined as the
+volume of the convex hull of the distribution of color points in the
+YCbCr color space. The test set reveals a small variation in sparsity. The
+sparsest point cloud is Bumbameuboi, followed by Romanoillamp. The
+rest of the point clouds in the set show very similar sparsity values. The
+set is a bit more diverse in terms of color gamut volume. The Longdress
+and Bumbameuboi point clouds present the highest values.
+3.2. Dataset encoding
+The dataset was encoded with the codecs under consideration.
+Tables 2 and 3 show the parameters used to encode the dataset with
+V-PCC and G-PCC, respectively, while Table 4 shows the settings for
+the Draco codec. The encoding results for RS-DLPCC were kindly
+provided by the authors [8]. As with any other deep learning based
+codec, the different bit-rates are obtained with a different configuration that results from training with a different rate/distortion tradeoff
+optimization.
+After encoding the test set, both V-PCC and G-PCC codecs had five
+quality levels, while RS-DLPCC had four quality levels and Draco had
+three quality levels. Taking the references into account, a total of 108
+scores were obtained for each subject. Some examples of decompressed
+results for the Longdress point cloud are represented in Fig. 2, where
+typical distortions caused by each codec can be observed, such as
+the reduction in resolution typical of octree-based codecs or Draco,
+the typical smoothing that can be found on projection-based codecs,
+and the appearance of empty spaces typical of machine learning-based
+codecs.
+3.3. Subjective experiment
+In this section, the quality study of EI2022 [1] is presented. The
+subjective quality evaluation was conducted at the Multimedia Quality
+Laboratory of the Universidade da Beira Interior. In this section, a description of the subjective quality evaluation is reported, detailing the
+visualization procedure (Section 3.3.1) and the evaluation procedure
+(Section 3.3.2).
+3.3.1. Visualization of point cloud content
+The reference and distorted point clouds were rotated in a video side
+by side in a subjective double stimulus evaluation. For all point clouds,
+a complete rotation over the vertical axis was applied. At each rotation
+degree, an image representing the point cloud view was extracted,
+obtained using the Point Cloud Library (PCL)6 Visualizer mode. Videos
+were created using the FFMPEG software. To ensure no compression
+was applied to the extracted frames, the stream copy option in FFMPEG
+was used.7 The point cloud views were rendered at 30 fps. Each view
+represented a 1 degree rotation, resulting in 12 s videos displayed with
+a 1920 × 1080 resolution.
+In some cases, the point size was manipulated to provide an improved visual representation. If the surface of the point cloud has some
+transparency or empty spaces, the subjects will see the opposite (or
+inner) part of the point cloud, creating a very bad quality perception [22,25]. This manipulation is important to avoid this perceptual
+effect by creating continuous surfaces.
+However, it must be ensured that this manipulation does not mask
+compression artifacts. An example is represented in Fig. 3, namely
+for the Rhetorician point cloud, for the first rate of G-PCC. It can be
+observed that without manipulating the point size (Fig. 3(b)), parts of
+the point cloud are missing, and the opposite part of the point cloud is
+visible. This tends to happen when encoding at low rates, as the points
+are usually rather far from each other. When the point size is increased
+(Fig. 3(c)), the artifacts created by the codec are still noticeable, but
+the inner part of the point cloud is not visible anymore. It should be
+noted that each point cloud present in both the subjective evaluation
+and training session must be analyzed and the point size manipulated
+individually, as different rates and different types of artifacts require
+different point sizes. The point size for each decoded point cloud used
+in the subjective evaluation is described in Table 5, for the reference
+point cloud and for all different codec rates. In most cases, only the
+lower rates require manipulation, while the reference point clouds do
+not need any at all. Even so, there are cases where the reference
+point cloud needs to be manipulated, namely for the Romanoillamp and
+Bumbameuboi point clouds. As shown in Table 1, these are the sparsest
+point clouds in the dataset. Since this manipulation is closely related to
+the distance between points, the point size of the reference point cloud
+was manipulated as well.
+3.3.2. Experimental procedure
+Prior to the evaluation, the subjects were shown a sequence of
+four videos depicting the chosen point cloud for the training session
+(Redandblack), representing four different levels of degradation, so that
+they could familiarize themselves with the distortion artifacts created
+by the codecs. For the evaluation itself, the Double Stimulus Impairment Scale was selected. The subjects were shown both the reference
+and the distorted video representations of the point clouds, rotating
+side by side. Then the subjects were asked to evaluate the quality of
+the distorted point cloud on a five-level rating scale (1: very annoying,
+2: slightly annoying, 3: annoying, 4: perceptible but not annoying, 5:
+imperceptible).
+Distorted versions of the same content were never visualized one
+after the other. To avoid biases, half of the subjects were shown
+videos with the reference on the right and the distorted content on
+the left, and vice-versa. Additionally, hidden reference–reference pairs
+were included in the test sequence. All sessions were conducted at
+the Multimedia Quality Laboratory Group of Universidade da Beira
+Interior, using a 47-inch, FULL HD LG 47LA860V, with the evaluation
+environment following the specifications in [59]. Table 6 contains
+information on the subjects that performed the subjective evaluation.
+After the subjective evaluation, all the scores were aggregated. Then
+the MOS and the 95% confidence intervals (CIs), assuming a Gaussian
+distribution, were computed for each content. The bitrate, measured
+in bits per point (bpp), is computed by taking the number of bits of
+the encoded content and dividing it by the number of points of the
+original content. Fig. 4 shows the MOS results. V-PCC provides the best
+quality scores, followed by G-PCC and the RS-DLPCC. Although Draco
+achieves very high scores, they are obtained at extremely high bitrates,
+making it the worst performing codec in this evaluation. The point
+cloud Bumbameuboi shows a different behavior from the other point
+clouds. This point cloud is rather sparse (as shown in Table 1) when
+compared with the others, which influences the codecs performance.
+This reveals that further studies need to be conducted in the future
+to address sparse point clouds, as they are commonly generated by
+multiple applications and with common acquisition technologies, such
+as LiDAR.
+3.4. Description of the objective quality metrics
+The quality metrics considered for this evaluation are classified as
+follows:
+• Full-reference geometry only (𝐹 𝑅, 𝐺𝐸𝑂): Point to Point (PSNR
+D1), Point to Plane (PSNR D2) and Plane to Plane (PL2Plane)
+and Point cloud Structural Similarity (PointSSIM) normal-based
+features;
+• Full-reference color only (𝐹 𝑅, 𝐶𝑂𝐿): Point to attribute (PSNR
+YUV), PointSSIM luminance-based features and Color Histogram
+Metric [43];
+• Full-reference geometry and color (𝐹 𝑅, 𝐺𝐸𝑂 + 𝐶𝑂𝐿): Point
+Cloud Quality Metric (PCQM), Point 2 Distribution and GraphSIM;
+• Reduced-reference color and geometry (𝑅𝑅, 𝐺𝐸𝑂+𝐶𝑂𝐿): Reduced reference point cloud metric (PCMRR);
+• No-Reference geometry and color (𝑁𝑅, 𝐺𝐸𝑂 + 𝐶𝑂𝐿): IT PCQA,
+MM-PCQA, ResSCNN, NR 3DQA and VQA PC.
+The PSNR D1 [16] metric computes the mean value of the geometric
+distance between the corresponding points in the reference and the distorted point cloud. The PSNR D2 [16] metric is computed by measuring
+the geometric distance between the distorted point cloud and the fitted
+reference point cloud local planes. For PSNR D1 and PSNR D2 metrics,
+the MSE or Hausdorff distances, are typically used as a measure of the
+geometric error. The geometry PSNR ratio is computed for both the
+MSE and Hausdorff distances using:
+
+Where 𝜖𝑅,𝐷 represents the distance (MSE or Hausdorff) between the
+reference and distorted point clouds and 𝜖𝐷,𝑅 between the distorted and
+the reference, while 𝑝 represents the geometric resolution in number of
+bits.
+For quality estimation, the PL2PLane metric [39] considers the
+angular differences between the point cloud normal vectors. The estimated plane angle between the distorted and reference point clouds is
+computed. The final metric is defined as a weighted mean using pooling
+estimators based on the mean squared (RMS) or mean squared error
+(MSE). Only the estimator that provided the best results is shown.
+The Point 2 distribution [40] metric considers the Mahalanobis
+distance to assess geometry, color, or jointly geometry and color distortions. In this study only the joint geometry and color results were
+considered.
+PCQM [36] uses a weighted linear combination of curvature and
+color information measures to predict the visual quality of a distorted
+point cloud.
+GraphSIM [42] extracts geometric keypoints from the point cloud
+and then uses graph similarity to evaluate the distortions in the point
+clouds.
+The PointSSIM metric [37] computes the similarity between geometry, normal vector, luminance, and curvature features.
+For the feature extraction, dispersion statistics are computed using one of the available estimators, namely the median , variance
+, mean absolute deviation , median absolute deviation ,
+coefficient of variation (𝐶𝑂𝑉 ), and quartile coefficient of dispersion
+(𝑄𝐶𝐷). The estimators will be applied over a number of 𝐾 nearest
+neighbors, set to 12 [37]. Three different pooling methods are also
+considered, namely the arithmetic mean (mean), MSE, and RMS. In this
+study, the luminance features were considered, as they are the ones that
+usually provide the best results [37], as well as normal-based features,
+in order to analyze the performance of the considered normal computation methods. It should be noted that, when considering normal-based
+features, the metric does not consider color information. Finally, all
+the pooling methods and all the dispersion statistics were considered,
+and only the best performing ones are shown for each of the selected
+features.
+The color Histogram [43] metric extracts color features from the
+reference and distorted point clouds and compares the resulting color
+histogram for each point cloud.
+The PSNR YUV metric [60] computes the error of the color values between the identified point in the reference and the distorted
+point cloud. The identification process is conducted using the nearest
+neighbor algorithm, and an individual error for each color channel is
+computed for the identified points based on the Euclidean distance.
+The overall PSNR YUV is computed by weighting each color channel
+as 𝑌 ∶ 𝑈 ∶ 𝑉 = 6 ∶ 1 ∶ 1, using:
+PSNR = 10 log10
+𝑝
+2
+𝜖
+Where 𝑝 is set to 255, because the considered point clouds have a color
+depth of 8 bit, and 𝜖 represents the MSE or Hausdorff distances.
+The PCMRR [41] metric extracts a small set of geometry, color, and
+normal features that are used to predict the visual quality of the content
+under evaluation. Then, it uses a linear optimization algorithm in order
+to find the best weights for each extracted feature.
+The no-reference metrics are mostly based on deep learning. The
+ResSCNN [31] metric is based on hierarchical feature extraction using
+sparse convolution blocks with residual connections. VQA PC [61] generates three different video sequences, with different point cloud rotations. Those sequences contain multi-frame temporal information. The
+ResNet 3D is modified as the feature extraction methodology, learning
+the correlation between features of the video sequences and the MOS.
+NR-3DPCA [62] considers an SVR trained with 3D natural scene statistics and entropy features from the geometric and texture domains to
+evaluate the quality of both point clouds and meshes. IT-PCQA [44]
+is based on 3D to 2D projections and using unsupervised adversarial
+domain adaptation. MM-PCQA [45] renders the point clouds into 2D
+images after splitting them into sub-models. Those sub-models represent local geometric distortions. The images are encoded with point
+based and image-based neural networks. The final score is obtained
+using symmetric cross-modal attention. The default implementation of
+the no-reference metrics was used. The authors of NR-3DQA train their
+metrics using the Waterloo [29] database. The developers of IT PCQA
+and MM PCQA are trained using the SJTU-PCQA [30] database. Finally,
+ResSCNN is trained using the LS-PCQA [31] database.
+The considered image metrics were computed for each individual
+frame of the tested videos. The final metric value was the average of
+the individual values for all the frames of each video (360).
+3.5. Performance of objective point cloud quality metrics
+The subjective evaluation (EI2022) results are used to validate
+the considered point cloud objective quality metrics. Furthermore, the
+BASICS validation dataset [2] is also considered. The validation subset
+of this publicly available database contains 15 point clouds, coded with
+V-PCC [4], G-PCC predlift [4], G-PCC RAHT [4], and GeoCNN [12].
+This results in 300 distorted point clouds. The subjective evaluation
+protocol used a double-sided stimulus, and the subjective scores were
+obtained with crowdsourcing. For the considered metrics, the statistical
+measures proposed in [63] were computed, specifically the Pearson
+Correlation Coefficient (PCC), the Spearman Rank Order Correlation
+Coefficient (SROCC), the Root-Mean Squared Error (RMSE) and the
+Outlier Ratio (OR). The predicted MOS for each of the objective metrics
+was computed by applying a logistic fitting function to the objective
+scores, as specified in [63] and usually done for objective metrics
+benchmarking [64].
+Table 7 reports the performance of the different metrics for both
+datasets. Objective quality metrics that only consider luminance information are noted as 𝐿𝑈𝑀. Note that for the metrics dependent on
+normal calculations, only the best of the two considered methods is
+shown. Table 7 also reports the performance of the metrics for the
+BASICS validation dataset. For the metrics that depend on the normals,
+the best result of the EI2022 dataset is reported, as the influence of the
+different normal computation methods will be studied further ahead
+(Section 4.3). It can be observed that PCQM is the best performing
+metric for both datasets, followed by GraphSIM. Furthermore, the conclusions from both datasets are quite similar. The Hausdorff distances
+show very low performance compared to their MSE counterparts. The
+color histogram metric and the PCMRR show a significant performance
+decrease. For both datasets, the no-reference metrics failed to provide
+accurate representations.
+Regarding the image-based metrics, the VIFp reveals higher correlation values for both datasets, but its performance is lower than the
+best performing point cloud metrics.
+Fig. 5 shows the metric vs. MOS plots for the best five metrics
+and the logistic curves. The MOS values were normalized between
+0 and 1, using a min–max normalization, as recommended by ITUTBT500 [59]. Those logistic functions were used for the computation
+of the predicted MOS values from the metric values. Furthermore, as
+PCQM and PCMRR values decrease with the increase in quality, their
+results are represented as 1-PCQM and 1-PCMRR to allow an easier
+comparison with the other metrics.
+Table 8 shows the metric correlation for each codec for the EI2022
+dataset. Draco and G-PCC show the highest correlation values, with
+𝑃 𝐶𝐶 and 𝑆𝑅𝑂𝐶𝐶 values all above 0.93 for the full-reference metrics
+and for the reduced-reference metric PCMRR.
+Tables 9–11 show the influence of the normal computation method
+for metrics depending on them. The normals computed with the Cloud
+Compare quadric fitting algorithm present the best results, always
+surpassing Meshlab K nearest neighbors. Table 12 shows the variation
+of the PointSSIM metric regarding the estimators. For normal based
+features, only the Cloud Compare quadric fitting is considered as it
+provides better results. The recommended settings for the metric were
+considered the baseline value (considering luminance values and the
+𝜎
+2 as a dispersion statistic [37], and the mean was used as a pooling
+estimator, as set in the default implementation of the metric8
+). It can be
+observed that the recommended baseline value achieves lower performance than most of the other available options. The best performance
+is obtained when considering the normal-based features, using 𝐶𝑂𝑉 as
+an estimator and the mean as the pooling method, for the EI2022 [1]
+dataset, and 𝑄𝐶𝐷 as an estimator and MSE as the pooling method for
+the BASICS validation dataset [2]. When considering luminance-based
+features, the best performance is achieved when considering 𝑚𝐴𝐷 as
+an estimator and MSE as a pooling method for both databases.
+3.6. Statistical significance analysis
+To further complement the study, a significance analysis evaluation
+using Krasula method was conducted [65]. This method evaluates the
+performance of objective metrics in two different analysis, notably
+‘‘Different vs Similar’’ and ‘‘Better vs Worse’’.
+In the first analysis, the distorted point clouds are paired and split
+into two different categories (Different and Similar). The ‘‘Different’’
+category represents pairs with statistically significant differences, and
+the ‘‘Similar’’ the ones without. For each pair, a one way ANOVA
+followed by a Turkeys honest significance difference test [66] is conducted, measuring the statistical significance of the differences. The
+Krasula method assumes that the absolute difference of predictions
+made by the metrics for different pairs should be larger than the
+similar pairs. To quantify the performance, the Receiving Operating
+Characteristic (ROC) analysis is used, and the performance is expressed
+as the Area Under ROC Curve (AUC).
+The second analysis (Better vs Worse) considers only the pairs that
+have statistically significant differences, by evaluating the performance
+of the metrics by identifying the better pairs with statistically significant differences. The performance is evaluated as correct classification
+percentage (CCp), and AUC.
+The ‘‘Different vs Similar’’ analysis revealed that there are 523 pairs
+classified as Similar and, 4628 pairs classified as Different. From the
+Different pairs, 2124 were classified as better, and 2504 were classified as worse by the ‘‘Better vs Worse’’ analysis. Finally, the Krasula
+method also performs statistical significance tests. Notably, it employs
+the Hanley–Macneil Method [67], to compare AUC values from ROC
+analysis. Furthermore, the Fisher’s [68] exact test is conducted to
+compare the percentage of correct recognition of the stimulus of higher
+quality.
+4. Results discussion
+Reliable metrics should represent similar behavior when compared
+with the subjective evaluation results. Comparing the plots of Fig. 4
+with the plots of Figs. 6 to 8, it can be observed that most of the metrics
+achieve a similar representation of the subjective results.
+4.1. Global analysis
+The evaluation of the metrics representation is observed in the results of Table 7, revealing that the most commonly used metrics provide
+a somewhat accurate representation of the results when predicting the
+quality of point cloud compression in the presence of artifacts created
+by deep-learning technology, as most metrics achieved correlation
+values above 0.8. Table 7 also reveals that most of the full reference
+with geometry and color metrics achieve better results than the full
+reference with geometry only metrics. Table 7 further shows that most
+metrics achieve similar results for the BASICS validation database [2].
+GraphSIM and PCQM are still the two best performing metrics. The
+main difference is that PSNR MSE D2 achieves a higher performance
+than PSNR MSE D1. The main cause for this is that the deep-learning
+solution GeoCNN [12] is optimized for the PSNR MSE D2 metric, which
+in turn increases the performance of the metric. Finally, Table 7 reveals
+that the no-reference metrics cannot accurately represent the quality
+of point cloud coding distortions. The metric that performed the best
+was MM-PCQA [45], achieving correlations above 0.7 for the subjective
+evaluation. For the BASICS validation dataset, the metric achieved a
+similar Pearson correlation, but the Spearman correlation value was
+very low. One reason for the low performance of the no-reference
+metrics is that they are trained on databases with a low number of point
+clouds that were distorted using the typical compression methods. The
+metrics are mainly trained on either the SJTU-PCQA or the Waterloo
+database, which contain several distortions that are not present in the
+currently used point cloud compression solutions. Fig. 5 also reveals
+that PSNR MSE D1 has a tendency to overestimate the quality of the
+deep learning solution, causing most of the samples to be below the
+logistic curve.
+4.2. Individual codecs
+Table 8 shows that G-PCC and Draco are the codecs that show
+higher correlation values for the different metrics. The distortions
+created by the codecs are octree/kd-tree based, that are simpler for the
+metrics evaluation. It is also observed that RS-DLPCC shows the worst
+correlation values, This codec tends to create blocking artifacts (Fig. 2),
+which are typically difficult to evaluate by the objective metrics [17].
+Furthermore, this codec was the one that required the most point
+size adjustment, as shown in Table 5. Although this is a necessary
+procedure, it can create a gap between the subjective evaluation and
+the objective metrics. That effect might become more relevant for
+metrics that use color information. Another evidence is that objective
+metrics that only consider geometry tend to show similar values across
+codecs.
+As a final remark, it can be observed that the full-reference geometry metrics have the best performance for each individual codec.
+However, they fail when they compare the different codecs between
+them. The joint geometry and color full reference metrics have lower
+performance, that might be caused by distortions introduced by G-PCC
+after encoding the geometry with RS-DLPCC. Furthermore, the full reference metrics have a great advantage over both the reduced-reference
+and no-reference methods.
+The metrics that only consider geometry yield superior results than
+the metrics that only consider luminance or color. This observation
+reveals humans are very sensitive to the geometry of the point clouds,
+while being less demanding regarding the color information. Previous
+studies [69] conducted for 2D images, showed that humans are more
+sensitive to changes in the image structure than to color variations.
+These results seem to generalize this well know 2D fact to 3D content.
+The joint quality metrics work around the balance between geometry and color, considering both types of information. PCQM is sensitive
+to the changes in curvature between the reference and distorted point
+clouds, which is revealed to be a very important feature for the definition of subjective quality. Moreover, luminance features are used in a
+weighted combination. GraphSIM processes the reference point cloud
+using a high-pass graph filter, which extracts structural information.
+This is used to extract keypoints that define neighborhoods where the
+distorted and reference point clouds luminance and chromatic information are compared. Hence, both metrics use structural information
+to predict the objective quality, along with color information.
+4.3. Normal plane influence
+Regarding the influence of the methodology on the normal computations required for PSNR MSE D2, PL2Plane, PCMRR and PointSSIM
+metrics, the conclusions are that the quadric fitting solution is the most
+suitable, with a radius of either 10 or 20, as those were the values
+that typically achieved the highest correlation scores. The PL2Plane and
+PCMRR exhibits a better performance with a radius of 5 for the BASICS
+validation dataset. Both metrics have low performance with BASICS.
+Plane estimation using the Meshlab K Nearest Neighbors failed to
+provide reliable normals for metrics computation, reaching values as
+low as 0.318 for 𝑃 𝐶𝐶. On the contrary, Cloud Compare quadric fitting
+almost always achieved results that allowed reliable normal computation, as shown in Tables 9 to 12. In most cases, PCC and SROCC
+values above 0.8 were obtained. Consequentially, most correlations are
+slightly below 0.9. While those results are still acceptable, they reveal
+that a cautious approach is needed when using point cloud quality
+metrics for the evaluation of different compression technologies that
+are dependent on normals information.
+4.4. Rate distortion analysis
+Figs. 6 to 10 show the metric vs. bpp (Bits Per Point) plots for
+the five best performing metrics for the EI2022 [1] dataset, namely
+PCQM [36], GraphSIM [42], MSE PSNR D1 [16], PCMRR [41] and
+PointSSIM [37] with normal-based features. All metrics reveal occurrences where the quality swaps between the different encoders.
+In particular, the deep learning based solution (RS-DLPCC) tends to
+achieve better results in the objective evaluation than the ones obtained
+in the subjective evaluation. Most metrics also show very similar results between the G-PCC and the deep learning solution, even though
+the subjective evaluation revealed different quality levels. This shows
+that some caution is necessary when using these metrics to evaluate
+machine learning based solutions. The plots also reveal that both
+the PCQM (Fig. 6) and GraphSIM (Fig. 7) metrics show very similar
+behaviors for all coding solutions. Most metrics have monotonic growth
+with the bit rate, as is observed for the MOS. However, some exceptions
+can be observed, notably for PCMRR (Fig. 9) and PointSSIM (Fig. 10),
+that in some cases have a non-monotonic behavior with the bitrate. It is
+important to emphasize that the subjective quality evaluation also has
+cases that do not reveal monotonic behavior. These cases happen when
+the balance between the geometry and the color quality is difficult to
+establish.
+4.5. Krasula method
+Fig. 11 shows the results for each analysis for the five best performing metrics for the EI2022 [1] dataset. Table 13 shows the AUC values
+for both analysis and CCp for the referred metrics. The PCQM metric
+reveals the best results in both analysis. It achieves the highest AUC values and CCp. Furthermore, statistical significance tests were performed,
+to understand when a given metric has an increased performance over
+another, for both types of analysis. The results are shown in Fig. 12,
+where it can be observed that from the five best performing metrics,
+PCQM performs significantly better. It is interesting to observe that
+PSNR MSE D1 and GraphSIM show no statically significant differences.
+GraphSIM achieves a higher AUC in the Different vs Similar analysis
+while PSNR MSE D1 yields a slightly higher AUC in the Better vs Worse
+analysis.
+5. Final comments
+This study provides a benchmark for point cloud objective quality
+metrics in the presence of coding distortions. Several metrics provided a
+poor representation of the subjective quality for the different distortions
+caused by the considered coding methods. This makes it difficult to
+compare different coding technologies because they create different
+types of artifacts. It was observed that V-PCC, a projection-based codec
+that uses image coding technology, tends to be over-evaluated by the
+studied metrics for its low bit rates. Moreover, most metrics tend to
+over-evaluate the deep learning based solution, showing higher results
+than those observed in the subjective evaluation.
+From the analyzed metrics, it was concluded that PCQM is the best
+performing metric for the evaluation of point cloud coding solutions.
+Furthermore, the Krasula test revealed that this metric shows statistically better results than the others. Finally, GraphSIM is the second best
+metric, achieving very good results for both datasets.
+The study on the influence of the normal plane estimation on metrics that rely on them, revealed that the best method is cloud compare
+quadric fitting, as it always outperformed Meshlab KNN. From the
+results, it is recommended to use a radius of 20. Regarding PointSSIM,
+it was concluded that the best estimator for the luminance features is
+the 𝑚𝐴𝐷. For the normal features the best estimator is the 𝐶𝑂𝑉 closely
+followed by 𝑄𝐶𝐷. The normals should be computed using the quadric
+fitting with a radius of 10.
+It is also advised to consider as much metrics as possible when
+evaluating point cloud coding solutions. A metric that never achieved
+the best correlation values may outperform the metric that is considered the best. However, when limited resources are available, it is
+recommended to always include PCQM and GraphSIM for point cloud
+coding solutions benchmarking, since they are the ones that consistently provided the most accurate representations of the subjective
+evaluations.
+It was also observed that the MPEG coding solutions achieve the
+best performance. V-PCC reveals the highest performance, except for
+the Bumbameuboi point cloud. This result seems to be linked to the
+higher sparsity of this point cloud. Furthermore, the deep-learning
+solution shows promising results. It manages to have a very similar
+performance as G-PCC, although it has added scalability property. The
+Draco codec fails to provide state-of-the art results.
+The point clouds used in this study are publicly available at https:
+//github.com/JpcPrazeres/SPIC2024.
+CRediT authorship contribution statement
+Joao Prazeres: Writing – review & editing, Writing – original draft,
+Visualization, Validation, Supervision, Software, Resources, Project administration, Methodology, Investigation, Formal analysis, Data curation, Conceptualization. Manuela Pereira: Writing – review & editing,
+Writing – original draft, Visualization, Validation, Supervision, Software, Resources, Project administration, Methodology, Investigation,
+Formal analysis, Data curation, Conceptualization. Antonio M.G. Pinheiro: Writing – review & editing, Writing – original draft, Visualization, Validation, Supervision, Software, Resources, Project administration, Methodology, Investigation, Formal analysis, Data curation,
+Conceptualization.
+Declaration of competing interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to
+influence the work reported in this paper.
+Data availability
+Data will be made available on request.
+Acknowledgments
+This work was funded by FCT/MCTES, Portugal through national
+funds and when applicable co-funded EU funds under the projects
+UIDB/50008/2020 and PLive X-0017-LX-20.

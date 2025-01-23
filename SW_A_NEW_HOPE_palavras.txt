@@ -1,8 +1,10 @@
+15
+1976
 2037
 38
+3PO
 94
 A
-AA
 AFTERNOON
 ALLEYWAY
 ANCHORHEAD
@@ -59,6 +61,7 @@ BLAST
 BLOCKADE
 BRIEFING
 Banners
+Bantha
 Banthas
 Bartender
 Base
@@ -84,7 +87,6 @@ Both
 Boy
 Bring
 But
-By
 C
 CAMIE
 CANTINA
@@ -141,14 +143,12 @@ DEAK
 DEATH
 DECK
 DESERT
-DESTROYER
 DETENTION
 DINING
 DOCKING
 DODONNA
 DOOR
 DOORS
-DRAFT
 DUNE
 DUNES
 DWELLING
@@ -164,10 +164,9 @@ Death
 Debris
 Deco
 Destroyed
-Destroyer
-Destroyers
 Detention
 Detoo
+Dia
 Did
 Didn
 Disgusting
@@ -176,12 +175,12 @@ Docking
 Dodonna
 Don
 Double
+Draft
 During
 Dutch
 EISLEY
 ELEVATOR
 ELEVEN
-EMPLACEMENT
 EMPLACEMENTS
 END
 ENTRY
@@ -200,6 +199,7 @@ Empire
 Enemy
 English
 Enough
+Episode
 Escape
 Estimated
 Evacuate
@@ -238,6 +238,7 @@ For
 Force
 Forget
 Four
+Fourth
 From
 Frustrated
 Full
@@ -250,6 +251,7 @@ GREEDO
 GUN
 GUNPORT
 GUNPORTS
+Gaffi
 Galactic
 Gantry
 Garbage
@@ -280,6 +282,7 @@ HAN
 HANGAR
 HOLD
 HOMESTEAD
+HOPE
 HUGE
 HUMAN
 HYPERSPACE
@@ -302,8 +305,6 @@ His
 Hokey
 Hold
 Holding
-Hope
-Hosted
 How
 Human
 Hundreds
@@ -315,6 +316,8 @@ IMPERIAL
 IN
 INT
 INTERCOM
+INTERIOR
+IV
 If
 Ignoring
 Imperial
@@ -325,10 +328,11 @@ Inform
 Into
 Is
 It
-Its
 JABBA
+JOURNAL
 JUNGLE
 Jabba
+January
 Jawa
 Jawas
 Jedi
@@ -350,6 +354,8 @@ LEADING
 LEIA
 LIFEPOD
 LOT
+LTD
+LUCASFILM
 LUKE
 Land
 Landspeeder
@@ -400,21 +406,21 @@ Mos
 Most
 Motti
 Move
-Movie
 Muffled
 My
 Myself
 NARROW
+NEW
 NINE
 Near
 Negative
 Negola
-New
 Next
 Nice
 Nine
 Ninety
 No
+Nogu
 Not
 Nothing
 Now
@@ -452,6 +458,7 @@ PILOT
 PIT
 PLANET
 PLAZA
+POINT
 PORKINS
 PORT
 POV
@@ -461,7 +468,6 @@ Pan
 Pardon
 Partially
 Pay
-People
 Perhaps
 Play
 Please
@@ -480,7 +486,6 @@ R2
 READ
 REBEL
 RED
-REVISED
 RIDGE
 ROCK
 ROOM
@@ -500,6 +505,7 @@ Republic
 Resigned
 Rest
 Resting
+Revised
 Rich
 Right
 Rotting
@@ -524,6 +530,7 @@ SPACECRAFT
 SPACEPORT
 SPEEDER
 STAR
+STARDESTROYER
 STARS
 STARSHIP
 STATION
@@ -532,8 +539,8 @@ STREETS
 SUBHALLWAY
 SUNSET
 SURFACE
-Sand
 Sandcrawler
+Sandpeople
 Say
 Screaming
 Secret
@@ -578,6 +585,7 @@ Stabilize
 Stand
 Standing
 Star
+Stardestroyer
 Starfleet
 Stars
 Station
@@ -594,6 +602,7 @@ Surely
 Surreal
 Suspended
 Switch
+Switching
 T
 TAGGE
 TARKIN
@@ -668,6 +677,7 @@ Unlock
 Until
 Use
 VADER
+VIEW
 VOICE
 Vader
 Vaporators
@@ -677,6 +687,7 @@ WAR
 WARS
 WASTELAND
 WEDGE
+WHILLS
 WILLARD
 WING
 WINGMAN
@@ -687,7 +698,6 @@ Walls
 Wan
 War
 Wars
-Wastes
 Watch
 We
 Wedge
@@ -714,7 +724,6 @@ Worship
 Worshipfulness
 X
 XP
-Xwing
 Y
 YAVIN
 Yahoo
@@ -937,7 +946,6 @@ bandoliers
 banging
 bangs
 bank
-bantha
 bar
 barbaric
 barely
@@ -1128,7 +1136,7 @@ building
 buildings
 built
 bulk
-bullseye
+bull
 bumpy
 bunch
 burden
@@ -1309,7 +1317,6 @@ colliding
 collision
 colony
 colors
-com
 combat
 come
 comes
@@ -1369,7 +1376,6 @@ contamination
 continual
 continue
 continues
-continuing
 contracting
 contrast
 control
@@ -1382,7 +1388,7 @@ converters
 convoy
 cooked
 cool
-coolly
+cooly
 coordinates
 copilot
 copy
@@ -1451,9 +1457,9 @@ crowed
 crudely
 cruiser
 cruisers
+crumbles
 crumbling
 crumpled
-crumples
 crusade
 crush
 crushing
@@ -1548,7 +1554,6 @@ device
 devices
 devotion
 dewaghi
-dianoga
 did
 didn
 die
@@ -1572,7 +1577,6 @@ directly
 directs
 dirt
 dirty
-disabled
 disappear
 disappearance
 disappeared
@@ -1703,7 +1707,6 @@ effort
 eight
 eighteen
 either
-ejects
 elbow
 electrobinoculars
 electronic
@@ -1723,6 +1726,7 @@ emerges
 emerging
 emitting
 emotion
+emotional
 emplacements
 empty
 end
@@ -1827,7 +1831,6 @@ farthest
 fascist
 fast
 faster
-fastgaining
 fat
 fate
 father
@@ -2020,7 +2023,6 @@ further
 fussing
 gaderffii
 gadgets
-gaffi
 gain
 gaining
 gains
@@ -2086,7 +2088,6 @@ gold
 gone
 gonna
 good
-goodbye
 goodness
 goods
 gorge
@@ -2103,13 +2104,13 @@ grain
 graphic
 grappler
 grate
-gray
 grease
 great
 greater
 greatly
 green
 greeted
+grey
 grim
 grimy
 grin
@@ -2177,7 +2178,7 @@ happened
 happiness
 happy
 hard
-hardened
+hardend
 harsh
 harvest
 has
@@ -2191,6 +2192,7 @@ haven
 hawking
 he
 head
+headed
 heading
 headphones
 heads
@@ -2278,7 +2280,6 @@ however
 howl
 howling
 howls
-http
 huddle
 huddles
 huff
@@ -2433,6 +2434,7 @@ kisses
 kitchen
 kneel
 knew
+knicking
 knights
 knock
 knocked
@@ -2448,7 +2450,6 @@ ladders
 landlocked
 landscape
 language
-languages
 lanky
 lap
 large
@@ -2463,7 +2464,6 @@ laserfire
 lasers
 last
 lasted
-lastminute
 latch
 latches
 late
@@ -2494,6 +2494,7 @@ led
 ledge
 left
 leg
+legged
 lens
 less
 let
@@ -2510,7 +2511,7 @@ life
 lifelong
 lifepod
 lifted
-lifters
+lifter
 lifts
 light
 lighted
@@ -2594,7 +2595,6 @@ lurches
 lying
 m
 machine
-maddogmovies
 made
 madly
 madmen
@@ -2697,7 +2697,6 @@ mind
 minded
 mindless
 mine
-mines
 minor
 minute
 minutes
@@ -2753,7 +2752,7 @@ multiple
 mumble
 murdered
 murky
-murmur
+murmer
 music
 must
 muted
@@ -2790,7 +2789,6 @@ network
 never
 new
 next
-nicking
 night
 nine
 no
@@ -2846,6 +2844,7 @@ on
 once
 oncoming
 one
+onimous
 only
 onrushing
 onto
@@ -2927,7 +2926,7 @@ past
 path
 pathetic
 patient
-patrons
+patron
 pats
 patterns
 paws
@@ -3070,7 +3069,7 @@ prison
 prisoner
 pristine
 private
-prizewinning
+prize
 probably
 probe
 problem
@@ -3141,9 +3140,9 @@ random
 range
 ransack
 rapidly
+rat
 rate
 rather
-ratof
 rats
 rattles
 ray
@@ -3159,14 +3158,12 @@ read
 readiness
 readout
 readouts
-reads
 ready
 real
 realization
 realize
 realizes
 really
-rear
 reasonable
 reassuring
 rebuttal
@@ -3355,8 +3352,6 @@ salt
 salutes
 same
 sand
-sandcrawler
-sands
 sarcastically
 satellite
 satisfaction
@@ -3490,7 +3485,6 @@ shell
 shield
 shielded
 shields
-shifting
 shined
 ship
 shipment
@@ -3570,7 +3564,6 @@ skill
 skim
 skins
 sky
-skyhopper
 slam
 slams
 slapping
@@ -3604,6 +3597,7 @@ smile
 smiles
 smiling
 smoke
+smokey
 smoking
 smoky
 smoldering
@@ -3689,7 +3683,7 @@ spherical
 spice
 spiel
 spies
-spindlylegged
+spindly
 spins
 spirit
 spot
@@ -3718,7 +3712,7 @@ standing
 stands
 star
 starboard
-starcruiser
+stardestroyers
 stare
 stares
 starfleet
@@ -3956,7 +3950,6 @@ thousands
 thrashing
 threat
 three
-threedimensional
 throat
 throng
 throttle
@@ -3991,7 +3984,6 @@ topples
 topside
 torpedoes
 torture
-toship
 tosses
 total
 totally
@@ -4058,11 +4050,12 @@ trouble
 troubles
 trudge
 trudges
-trunknose
+trunk
 trust
 trusting
 try
 trying
+trys
 tub
 tube
 tugs
@@ -4213,6 +4206,7 @@ was
 wasn
 waste
 wasteland
+wastes
 watch
 watches
 watching
@@ -4273,7 +4267,6 @@ will
 win
 wind
 window
-windows
 winds
 wing
 wingman
@@ -4281,6 +4274,7 @@ wingmen
 wings
 wink
 winks
+winning
 wiping
 wires
 wise
@@ -4306,6 +4300,7 @@ works
 workshop
 world
 worm
+wormie
 worn
 worried
 worries
@@ -4321,7 +4316,6 @@ wraps
 wrench
 wretched
 wrong
-www
 ya
 yanked
 yeah
