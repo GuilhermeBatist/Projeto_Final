@@ -109,52 +109,70 @@ module Trie = Make(L)
 let create_prefix_tree keys tree = 
   Trie.add keys tree  
 
-  (* Graph module setup for visualization *)
-(* open Graph
-module Vertex = struct
-  type t = char list
-  let compare = Stdlib.compare
+(*--------------------------------------------BEGIN DRAW THE TRIE--------------------------------------------------------------------*)
+
+module G = Graph.Imperative.Digraph.ConcreteBidirectional(struct
+  type t = string
+  let compare = compare
   let hash = Hashtbl.hash
   let equal = (=)
-  
-end
-
-module G = Imperative.Digraph.ConcreteBidirectional(Vertex)
-
-module E = struct
-  type t = unit
-  let compare = Stdlib.compare
-  let equal = (=)
-  let hash = Hashtbl.hash
-end
+end)
 
 module Dot = Graph.Graphviz.Dot(struct
   include G
   let edge_attributes _ = []
   let default_edge_attributes _ = []
   let get_subgraph _ = None
-  let vertex_name v = String.concat "" (List.map (String.make 1) v)
-  let vertex_attributes _ = []
+  let vertex_attributes v = [`Label v]
+  let vertex_name v = "\"" ^ v ^ "\""
   let default_vertex_attributes _ = []
   let graph_attributes _ = []
-end) *)
+end)
 
+type trie_node = {
+  mutable is_end_of_word: bool;
+  mutable children: (char, trie_node) Hashtbl.t;
+}
 
-(* Function to add trie elements to the graph *)
-(* let add_to_graph g trie = 
-  let rec add_to_graph' g trie prefix = 
-    if trie.Trie.word then G.add_vertex g prefix;
-    Trie.M.iter (fun k v -> 
-      G.add_edge g prefix (k::prefix);
-      add_to_graph' g v (k::prefix)
-    ) trie.Trie.branches
+let create_node () = {
+  is_end_of_word = false;
+  children = Hashtbl.create 26;
+}
+
+let add_word root word =
+  let current = ref root in
+  String.iter (fun c ->
+    if not (Hashtbl.mem !current.children c) then
+      Hashtbl.add !current.children c (create_node ());
+    current := Hashtbl.find !current.children c
+  ) word;
+  !current.is_end_of_word <- true
+
+let draw_trie root n =
+  let g = G.create () in
+  let rec add_edges prefix node =
+    Hashtbl.iter (fun c child ->
+      let label = prefix ^ String.make 1 c in
+      G.add_vertex g prefix;
+      G.add_vertex g label;
+      G.add_edge g prefix label;
+      add_edges label child
+    ) node.children
   in
-  add_to_graph' g trie [] *)
+  add_edges "" root;
+  let oc = open_out ("trie_" ^ string_of_int n ^ ".dot") in
+  Dot.output_graph oc g;
+  close_out oc;
+  ignore (Sys.command ("dot -Tpng img/trie/trie_" ^ string_of_int n ^ ".dot -o trie_" ^ string_of_int n ^ ".png"))
+
+
+(*---------------------------------------------END DRAW THE TRIE---------------------------------------------------------------------*)
+  
 
  (* Main function to create a graph from the trie and output it to a file *)
  
 let () = 
-  let keys = read_keys_from_file "Joey@fakeplagio-palavras.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
+  let keys = read_keys_from_file "tests/Joey@fakeplagio-palavras.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
   let trie = List.fold_left (fun acc s -> create_prefix_tree  s acc) Trie.empty keys  in
   let word = "evaluation" in 
     let explode s = 
@@ -168,20 +186,4 @@ let () =
   Printf.printf "Word %s was found: %b.\n Word %s was removed:%b\n" word found w2 (not rem);
 
 
-  (* let g = G.create () in
-  add_to_graph g keys;
-  let oc = open_out "prefT.dot" in
-  Dot.output_graph oc g;
-  close_out oc;
-  ignore (Sys.command ("dot -Tpng prefT.dot -o prefix_tree.png")) *)
-  (* create tree or print tree or save to file *)
   
-  (* Graph visualization code is commented out and should be implemented or removed based on requirements. *)
-  (* let g = G.create () in
-  add_to_graph g keys ;
-  let oc = open_out "preft.dot" in
-  Dot.output_graph oc g;
-  (*convert .dot to .png*)
-  let _ = Sys.command "dot -Tpng preft.dot -o preft.png" in
-  close_out oc 
-  let () = Printf.printf "Graph created\n" *)

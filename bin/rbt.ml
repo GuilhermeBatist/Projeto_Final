@@ -1,4 +1,5 @@
 (* Define color type for RED-BLACK Tree nodes *)
+
 type color = 
   | RED 
   | BLACK
@@ -88,16 +89,16 @@ let draw_rb_tree t n =
 
 
 (* Function to balance the tree after insertion *)
-let balance (color, y, a, b) t n = 
-  match color, y, a, b with
-  | BLACK, z, Node (RED, y, Node (RED, x, a, b), c), d
-  | BLACK, z, Node (RED, x, a, Node (RED, y, b, c)), d
-  | BLACK, x, a, Node (RED, z, Node (RED, y, b, c), d)
-  | BLACK, x, a, Node (RED, y, b, Node (RED, z, c, d)) ->
-     let nodo = Node (RED, y, Node (BLACK, x, a, b), Node (BLACK, z, c, d)) in
-      draw_rb_tree nodo n; 
+let balance (color, value, left, right) tree n = 
+  match color, value, left, right with
+  | BLACK, z, Node (RED, value, Node (RED, x, a, b), c), d
+  | BLACK, z, Node (RED, x, a, Node (RED, value, b, c)), d
+  | BLACK, x, a, Node (RED, z, Node (RED, value, b, c), d)
+  | BLACK, x, a, Node (RED, value, b, Node (RED, z, c, d)) ->
+     let nodo = Node (RED, value, Node (BLACK, x, a, b), Node (BLACK, z, c, d)) in
+      draw_rb_tree tree n; 
       nodo
-  | a, b, c, d -> let node = Node (a, b, c, d) in draw_rb_tree node n; node
+  | a, b, c, d -> let node = Node (a, b, c, d) in draw_rb_tree tree n; node
 
 
 (* Function to insert a new element into the tree *)
@@ -109,12 +110,12 @@ let balance (color, y, a, b) t n =
 let insert x tree n =
     let rec ins = function
         | Leaf -> Node (RED, x, Leaf, Leaf)  
-        | Node (color, y, a, b) as t ->
-            if x < y then balance (color, y, ins a, b) tree n 
-            else if x > y then balance (color, y, a, ins b) tree n
+        | Node (color, value, left, right) as t ->
+            if x < value then balance (color, value, ins left, right) tree n 
+            else if x > value then balance (color, value, left, ins right) tree n
             else t in 
   match ins tree with
-    | Node (_, y, a, b) -> Node (BLACK, y, a, b)  
+    | Node (_, value, left, right) ->  Node (BLACK, value, left, right)       
     | Leaf -> failwith "RBT insert failed with ins returning leaf"  (* guaranteed to be nonempty *)
 
 (* Helper function to calculate the height of the tree *)
@@ -165,7 +166,7 @@ let delete_with_check x s n =
 
 (* Main function to create the graph and output it as a .dot and .png file *)
 let () =  
-  let keys = read_keys_from_file "output.txt" in
+  let keys = read_keys_from_file "tests/output.txt" in
     let n,rbtree = List.fold_left (fun (i,acc) key -> let t = insert key acc i in draw_rb_tree t i; (i+1),t) (0,Leaf) keys in
       let rbtree =  insert 27 rbtree n in
         draw_rb_tree rbtree n

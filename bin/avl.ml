@@ -53,7 +53,7 @@ let draw_avl_tree tree n=
   let oc = open_out "avl_tree.dot" in
   Dot.output_graph oc g;
   close_out oc;
-  ignore (Sys.command ("dot -Tpng avl_tree.dot -o avl_test_"^ string_of_int(n) ^".png"))
+  ignore (Sys.command ("dot -Tpng avl_tree.dot -o img/avl/avl_test_"^ string_of_int(n) ^".png"))
 
 (* Function to balance the AVL tree during insertion or deletion *)
 let balance v l r  =
@@ -139,7 +139,7 @@ let read_keys_from_file filename =
   
 (* Main function to create the AVL tree and visualize it *)
 let () =
-  let keys = read_keys_from_file "output.txt" in
+  let keys = read_keys_from_file "tests/output.txt" in
   let n, avl_tree = List.fold_left (fun (i,tree) key ->let t = add key tree in draw_avl_tree t i; (i+1),t ) (0,Leaf) keys in
   (*remove the eigth element of keys from avl*)
   let avl_tree = remove (List.nth keys 8) avl_tree  in

@@ -29,4 +29,4 @@ let write_words_to_file words filename =
 
 let () =
   let word_set = read_words_from_file "/home/guilhermeb/Projeto_Final/bin/SW_A_NEW_HOPE.txt" in
-  write_words_to_file word_set "/home/guilhermeb/Projeto_Final/SW_A_NEW_HOPE_palavras.txt"
+  write_words_to_file word_set "/home/guilhermeb/Projeto_Final/tests/SW_A_NEW_HOPE_palavras.txt"

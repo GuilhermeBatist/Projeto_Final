@@ -103,7 +103,7 @@ let print_tree t =
 
 
 let () =
-  let keys = read_words_from_file "Joey@fakeplagio-palavras.txt" in
+  let keys = read_words_from_file "test/Joey@fakeplagio-palavras.txt" in
   let patricia = List.fold_left (fun acc key -> add key acc) Empty keys in 
   List.iter (fun key -> Printf.printf "Key %s\n" key) keys;
   Printf.printf "Patricia tree created\n" ;

@@ -19,4 +19,4 @@ let print_to_file f lst =
 let () =
   Printf.printf "Please insert the number of ints you want to generate:\n";
   flush stdout;
-  Scanf.scanf " %d" (fun n -> print_to_file "output.txt" @@ gen_tests n)
+  Scanf.scanf " %d" (fun n -> print_to_file "tests/output.txt" @@ gen_tests n)
