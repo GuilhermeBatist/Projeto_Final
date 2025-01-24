@@ -14,6 +14,7 @@ module type PersistentSet = sig
   val remove : elt -> t -> t
   val inter : t -> t -> t 
   val compare : t -> t -> int 
+  val iter : (elt -> unit) -> t -> unit
 end
 
 (* Module implementing a persistent set using a prefix tree (trie) *)
@@ -40,6 +41,7 @@ struct
     | i :: l -> 
       let b = try M.find i t.branches with Not_found -> empty in 
       {t with branches = M.add i (add l b ) t.branches}
+
 
   let rec remove x t =
     match x with
@@ -69,6 +71,10 @@ struct
     if c <> 0 then c else M.compare compare t1.branches t2.branches
     
 
+  let rec iter f t =
+    if t.word then f [] ;
+    M.iter (fun k v -> iter (fun l -> f (k::l)) v) t.branches
+    
   type 'a b = { value : 'a option ; branches : 'a b M.t}  
 
   let rec find x t =
@@ -110,6 +116,58 @@ let create_prefix_tree keys tree =
   Trie.add keys tree  
 
 (*--------------------------------------------BEGIN DRAW THE TRIE--------------------------------------------------------------------*)
+
+open Graph
+
+module Vertex = struct
+  type t = string
+  let compare = compare
+  let hash = Hashtbl.hash
+  let equal = (=)
+end
+
+module Edge = struct
+  type t = string
+  let compare = compare
+  let default = ""
+end
+
+module G = Imperative.Digraph.ConcreteLabeled(Vertex)(Edge)
+
+module Dot = Graphviz.Dot(struct
+  include G
+    let edge_attributes _ = []
+    let default_edge_attributes _ = []
+    let get_subgraph _ = None
+    let vertex_attributes _ = []
+    let vertex_name v = v
+    let default_vertex_attributes _ = []
+    let graph_attributes _ = []
+  end)
+
+let draw_trie trie =
+  let g = G.create () in
+  let rec add_edges prefix node =
+    let node_label = String.concat "" (List.map (String.make 1) prefix) in
+    let v = G.V.create node_label in
+    G.add_vertex g v;
+    M.iter (fun k subtree ->
+      let new_prefix = prefix @ [k] in
+      let child_label = String.concat "" (List.map (String.make 1) new_prefix) in
+      let child = G.V.create child_label in
+      G.add_vertex g child;
+      G.add_edge g v child;
+      add_edges new_prefix subtree
+    ) node.branches
+  in
+  add_edges [] trie;
+  let filename = "trie.dot" in
+  let oc = open_out filename in
+  Dot.output_graph oc g;
+  close_out oc;
+  ignore (Sys.command ("dot -Tpng " ^ filename ^ " -o " ^ (Filename.remove_extension filename) ^ ".png"))
+
+
 
 (*---------------------------------------------END DRAW THE TRIE---------------------------------------------------------------------*)
   

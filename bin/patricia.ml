@@ -90,7 +90,46 @@ let read_words_from_file filename =
         in
         loop []
 
-let print_tree t =
+open Graphics
+
+let rec draw_tree x y = function
+  | Empty -> ()
+  | Leaf s ->
+    moveto x y;
+    draw_string s
+  | Node(p, b, left, right) ->
+    moveto x y;
+    draw_string (Printf.sprintf "%s (%d)" p b);
+    let dx = 50 in
+    let dy = 50 in
+    draw_tree (x - dx) (y - dy) left;
+    draw_tree (x + dx) (y - dy) right
+
+let save_graph_as_png filename =
+  let img = get_image 0 0 (size_x ()) (size_y ()) in
+  let oc = open_out_bin filename in
+  output_image oc img;
+  close_out oc
+
+
+let () =
+  let keys = read_words_from_file "test/Joey@fakeplagio-palavras.txt" in
+  let patricia = List.fold_left (fun acc key -> add key acc) Empty keys in 
+  List.iter (fun key -> Printf.printf "Key %s\n" key) keys;
+  Printf.printf "Patricia tree created\n" ;
+  open_graph " 800x600";
+  set_window_title "Patricia Tree";
+  draw_tree 400 500 patricia;
+  save_graph_as_png "patricia_tree.png";
+  let word = "volume" in 
+  let b =  mem word patricia in
+  Printf.printf "The word %s is in the Patricia tree: %b\n" word b;
+  let _ = read_key () in
+  close_graph ()
+
+
+
+  (* let print_tree t =
   let rec aux t = match t with
     | Empty -> Printf.printf "Empty\n"
     | Leaf x -> Printf.printf "Leaf %s\n" x
@@ -99,16 +138,4 @@ let print_tree t =
       aux left;
       aux right
   in
-  aux t 
-
-
-let () =
-  let keys = read_words_from_file "test/Joey@fakeplagio-palavras.txt" in
-  let patricia = List.fold_left (fun acc key -> add key acc) Empty keys in 
-  List.iter (fun key -> Printf.printf "Key %s\n" key) keys;
-  Printf.printf "Patricia tree created\n" ;
-  print_tree patricia;
-  let word = "volume" in 
-  let b =  mem word patricia in
-  Printf.printf "The word %s is in the Patricia tree: %b\n" word b
-
+  aux t  *)
