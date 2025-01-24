@@ -111,68 +111,13 @@ let create_prefix_tree keys tree =
 
 (*--------------------------------------------BEGIN DRAW THE TRIE--------------------------------------------------------------------*)
 
-module G = Graph.Imperative.Digraph.ConcreteBidirectional(struct
-  type t = string
-  let compare = compare
-  let hash = Hashtbl.hash
-  let equal = (=)
-end)
-
-module Dot = Graph.Graphviz.Dot(struct
-  include G
-  let edge_attributes _ = []
-  let default_edge_attributes _ = []
-  let get_subgraph _ = None
-  let vertex_attributes v = [`Label v]
-  let vertex_name v = "\"" ^ v ^ "\""
-  let default_vertex_attributes _ = []
-  let graph_attributes _ = []
-end)
-
-type trie_node = {
-  mutable is_end_of_word: bool;
-  mutable children: (char, trie_node) Hashtbl.t;
-}
-
-let create_node () = {
-  is_end_of_word = false;
-  children = Hashtbl.create 26;
-}
-
-let add_word root word =
-  let current = ref root in
-  String.iter (fun c ->
-    if not (Hashtbl.mem !current.children c) then
-      Hashtbl.add !current.children c (create_node ());
-    current := Hashtbl.find !current.children c
-  ) word;
-  !current.is_end_of_word <- true
-
-let draw_trie root n =
-  let g = G.create () in
-  let rec add_edges prefix node =
-    Hashtbl.iter (fun c child ->
-      let label = prefix ^ String.make 1 c in
-      G.add_vertex g prefix;
-      G.add_vertex g label;
-      G.add_edge g prefix label;
-      add_edges label child
-    ) node.children
-  in
-  add_edges "" root;
-  let oc = open_out ("trie_" ^ string_of_int n ^ ".dot") in
-  Dot.output_graph oc g;
-  close_out oc;
-  ignore (Sys.command ("dot -Tpng img/trie/trie_" ^ string_of_int n ^ ".dot -o trie_" ^ string_of_int n ^ ".png"))
-
-
 (*---------------------------------------------END DRAW THE TRIE---------------------------------------------------------------------*)
   
 
  (* Main function to create a graph from the trie and output it to a file *)
  
 let () = 
-  let keys = read_keys_from_file "tests/Joey@fakeplagio-palavras.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
+  let keys = read_keys_from_file "tests/1_words_test.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
   let trie = List.fold_left (fun acc s -> create_prefix_tree  s acc) Trie.empty keys  in
   let word = "evaluation" in 
     let explode s = 
