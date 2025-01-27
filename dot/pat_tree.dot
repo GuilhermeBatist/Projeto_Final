@@ -1,0 +1,21 @@
+digraph G {
+  ;
+  Apex;
+  Appetite;
+  Applesauce;
+  Apple;
+  Apartment;
+  Apply;
+  Ape;
+  
+  
+   -> ;
+   -> Apartment;
+   -> Ape;
+   -> Apex;
+   -> Appetite;
+   -> Apple;
+   -> Applesauce;
+   -> Apply;
+  
+  }

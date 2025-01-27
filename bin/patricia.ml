@@ -90,42 +90,56 @@ let read_words_from_file filename =
         in
         loop []
 
-open Graphics
 
-let rec draw_tree x y = function
-  | Empty -> ()
-  | Leaf s ->
-    moveto x y;
-    draw_string s
-  | Node(p, b, left, right) ->
-    moveto x y;
-    draw_string (Printf.sprintf "%s (%d)" p b);
-    let dx = 50 in
-    let dy = 50 in
-    draw_tree (x - dx) (y - dy) left;
-    draw_tree (x + dx) (y - dy) right
+module G = Graph.Imperative.Digraph.ConcreteBidirectional(struct
+  type t = string
+  let compare = compare
+  let hash = Hashtbl.hash
+  let equal = (=)
+end)
 
-let save_graph_as_png filename =
-  let img = get_image 0 0 (size_x ()) (size_y ()) in
-  let oc = open_out_bin filename in
-  output_image oc img;
-  close_out oc
+module Dot = Graph.Graphviz.Dot(struct
+  include G
+  let edge_attributes _ = []
+  let default_edge_attributes _ = []
+  let get_subgraph _ = None
+  let vertex_name v = v
+  let vertex_attributes _ = []
+  let default_vertex_attributes _ = []
+  let graph_attributes _ = []
+end)
+
+let draw_patricia_tree tree n =
+   let g = G.create () in
+  let rec add_edges = function
+    | Empty -> ()
+    | Leaf x -> G.add_vertex g x
+    | Node(p, _, left, right) ->
+      G.add_vertex g p;
+      (match left with
+       |Empty -> ()
+       | Leaf x -> G.add_edge g p x
+       | Node(l, _, _, _) -> G.add_edge g p l; add_edges left);
+      (match right with
+        |Empty -> ()
+       | Leaf x -> G.add_edge g p x
+       | Node(r, _, _, _) -> G.add_edge g p r; add_edges right)
+  in
+  add_edges tree;
+  let oc = open_out "dot/pat_tree.dot" in
+  Dot.output_graph oc g;
+  close_out oc;
+  ignore (Sys.command ("dot -Tpng dot/pat_tree.dot -o img/pat/patricia_test_"^ string_of_int(n) ^".png"))
+
+
 
 
 let () =
-  let keys = read_words_from_file "test/Joey@fakeplagio-palavras.txt" in
-  let patricia = List.fold_left (fun acc key -> add key acc) Empty keys in 
-  List.iter (fun key -> Printf.printf "Key %s\n" key) keys;
-  Printf.printf "Patricia tree created\n" ;
-  open_graph " 800x600";
-  set_window_title "Patricia Tree";
-  draw_tree 400 500 patricia;
-  save_graph_as_png "patricia_tree.png";
-  let word = "volume" in 
-  let b =  mem word patricia in
-  Printf.printf "The word %s is in the Patricia tree: %b\n" word b;
-  let _ = read_key () in
-  close_graph ()
+  let keys = read_words_from_file "tests/1_words_test.txt" in
+  let n,patricia = List.fold_left (fun (i,acc) key -> let tree = add key acc in draw_patricia_tree tree i;(i+1),tree ) (0,Empty) keys in
+  draw_patricia_tree patricia n
+
+
 
 
 

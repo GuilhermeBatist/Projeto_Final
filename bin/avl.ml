@@ -50,18 +50,23 @@ let draw_avl_tree tree n=
        | Node(rv, _, _, _) -> G.add_edge g v rv; add_edges r)
   in
   add_edges tree;
-  let oc = open_out "avl_tree.dot" in
+  let oc = open_out "dot/avl_tree.dot" in
   Dot.output_graph oc g;
   close_out oc;
-  ignore (Sys.command ("dot -Tpng avl_tree.dot -o img/avl/avl_test_"^ string_of_int(n) ^".png"))
+  ignore (Sys.command ("dot -Tpng dot/avl_tree.dot -o img/avl/avl_test_"^ string_of_int(n) ^".png"))
 
 (* Function to balance the AVL tree during insertion or deletion *)
-let balance v l r  =
+(**
+  @param v: the value of the node
+  @param l: the left child of the node
+  @param r: the right child of the node
+*)
+let balance v l r   =
   let hl = height l in
   let hr = height r in
   if hl > 1 + hr then
     match l with
-    | Node(lv, _, ll, lr) when height ll >= height lr ->
+    | Node(lv, _, ll, lr) when height ll >= height lr -> 
         node lv ll (node v lr r) 
     | Node(vl, _, ll, Node (lrv, _, lrl, lrr)) ->
         node lrv (node vl ll lrl) (node v lrr r)
@@ -84,6 +89,9 @@ let rec min_elt = function
   | Node (_, _, l, _) -> min_elt l
 
 (* Function to add a new element to the AVL tree *)
+(**
+@param x: the element to be added
+*)
 let rec add x = function
   | Leaf -> Node(x, 1, Leaf, Leaf)
   | Node (v, _, l, r) as t ->

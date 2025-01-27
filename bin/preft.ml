@@ -133,6 +133,7 @@ module Edge = struct
 end
 
 module G = Imperative.Digraph.ConcreteLabeled(Vertex)(Edge)
+module CharMap = Map.Make(Char)
 
 module Dot = Graphviz.Dot(struct
   include G
@@ -145,27 +146,34 @@ module Dot = Graphviz.Dot(struct
     let graph_attributes _ = []
   end)
 
-let draw_trie trie =
+(* Function to draw a trie to a png image *)
+(**
+@param trie: the trie to be drawn
+@param n: the number of the test
+@param prefix: the prefix of the word
+@param t: the trie
+@return: a png image of the trie
+*)
+let draw_trie trie n =
   let g = G.create () in
-  let rec add_edges prefix node =
+  let rec add_edges prefix t =
     let node_label = String.concat "" (List.map (String.make 1) prefix) in
     let v = G.V.create node_label in
     G.add_vertex g v;
-    M.iter (fun k subtree ->
+    CharMap.iter (fun k subtree ->
       let new_prefix = prefix @ [k] in
       let child_label = String.concat "" (List.map (String.make 1) new_prefix) in
       let child = G.V.create child_label in
       G.add_vertex g child;
       G.add_edge g v child;
       add_edges new_prefix subtree
-    ) node.branches
+    )t.branches
   in
   add_edges [] trie;
-  let filename = "trie.dot" in
-  let oc = open_out filename in
+  let oc = open_out "dot/trie.dot" in
   Dot.output_graph oc g;
   close_out oc;
-  ignore (Sys.command ("dot -Tpng " ^ filename ^ " -o " ^ (Filename.remove_extension filename) ^ ".png"))
+  ignore (Sys.command ("dot -Tpng dot/trie.dot  -o img/pat/pat_test_" ^ string_of_int(n) ^ ".png"))
 
 
 

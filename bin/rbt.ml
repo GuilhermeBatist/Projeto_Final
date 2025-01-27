@@ -82,10 +82,10 @@ let draw_rb_tree t n =
         add_edges r
   in
   add_edges t;
-  let oc = open_out "rbt.dot" in
+  let oc = open_out "dot/rbt.dot" in
   Dot.output_graph oc g; 
   close_out oc;
-  ignore (Sys.command ("dot -Tpng rbt.dot -o img/rbt/rbt_test_"^ string_of_int(n) ^".png"))
+  ignore (Sys.command ("dot -Tpng dot/rbt.dot -o img/rbt/rbt_test_"^ string_of_int(n) ^".png"))
 
 
 (* Function to balance the tree after insertion *)
