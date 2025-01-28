@@ -1,3 +1,5 @@
+open Unix
+
 (* Module type defining the interface for a letter *)
 module type Letter = sig
   type t 
@@ -117,7 +119,7 @@ let create_prefix_tree keys tree =
 
 (*--------------------------------------------BEGIN DRAW THE TRIE--------------------------------------------------------------------*)
 
-open Graph
+(* open Graph
 
 module Vertex = struct
   type t = string
@@ -144,7 +146,7 @@ module Dot = Graphviz.Dot(struct
     let vertex_name v = v
     let default_vertex_attributes _ = []
     let graph_attributes _ = []
-  end)
+  end) *)
 
 (* Function to draw a trie to a png image *)
 (**
@@ -154,7 +156,7 @@ module Dot = Graphviz.Dot(struct
 @param t: the trie
 @return: a png image of the trie
 *)
-let draw_trie trie n =
+(* let draw_trie trie n =
   let g = G.create () in
   let rec add_edges prefix t =
     let node_label = String.concat "" (List.map (String.make 1) prefix) in
@@ -167,25 +169,92 @@ let draw_trie trie n =
       G.add_vertex g child;
       G.add_edge g v child;
       add_edges new_prefix subtree
-    )t.branches
+    ) t.branches 
   in
   add_edges [] trie;
   let oc = open_out "dot/trie.dot" in
   Dot.output_graph oc g;
   close_out oc;
-  ignore (Sys.command ("dot -Tpng dot/trie.dot  -o img/pat/pat_test_" ^ string_of_int(n) ^ ".png"))
+  ignore (Sys.command ("dot -Tpng dot/trie.dot  -o img/pat/pat_test_" ^ string_of_int(n) ^ ".png")) *)
 
 
 
 (*---------------------------------------------END DRAW THE TRIE---------------------------------------------------------------------*)
   
+(*---------------------------------------------BEGIN TESTS---------------------------------------------------------------------------*)
+(* Function to measure the time taken to add words to the trie *)
+(**
+@param words: the list of words to be added to the trie
+@return: the trie and the time taken to add the words
+*)
+ let measure_add_time words =
+  let start_time = gettimeofday () in
+  let trie = List.fold_left (fun acc word -> create_prefix_tree word acc) Trie.empty words in
+  let end_time = gettimeofday () in
+  let time_taken = end_time -. start_time in
+  (trie, time_taken)
 
- (* Main function to create a graph from the trie and output it to a file *)
- 
+(* Function to measure the time taken to search for words in the trie *)
+(**
+@param trie: the trie to search in
+@param words: the list of words to search for
+@return: the time taken to search for the words
+*)
+let measure_search_time trie words =
+  let start_time = gettimeofday () in
+  List.iter (fun word -> ignore (Trie.mem word trie)) words;
+  let end_time = gettimeofday () in
+  end_time -. start_time
+
+(* Function to measure the time taken to remove words from the trie *)
+(**
+@param trie: the trie to remove words from
+@param words: the list of words to remove
+@return: the trie and the time taken to remove the words
+*)
+let measure_remove_time trie words =
+  let start_time = gettimeofday () in
+  let trie = List.fold_left (fun acc word -> Trie.remove word acc) trie words in
+  let end_time = gettimeofday () in
+  let time_taken = end_time -. start_time in
+  (trie, time_taken)
+
+(* Function to write the results to a file *)
+(**
+@param filename: the name of the file to write to
+@param results: the results to write to the file
+*)
+let append_results_to_file filename results =
+  let oc = open_out_gen [Open_creat; Open_text; Open_append] 0o666 filename in
+  output_string oc results;
+  close_out oc
+
+ (*-------------------------------------------END TESTS-------------------------------------------------------------------------------*)
+
+(* Main function to create a graph from the trie and output it to a file *)
 let () = 
-  let keys = read_keys_from_file "tests/1_words_test.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
-  let trie = List.fold_left (fun acc s -> create_prefix_tree  s acc) Trie.empty keys  in
-  let word = "evaluation" in 
+  let keys = read_keys_from_file "tests/Joey@fakeplagio-palavras.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
+(* Measure add time *)
+let (trie, add_time) = measure_add_time keys in
+let add_time_str = Printf.sprintf "Add words: %f seconds\n" add_time in
+
+(* Measure search time *)
+let search_time = measure_search_time trie keys in
+let search_time_str = Printf.sprintf "Search words: %f seconds\n" search_time in
+
+
+(* Measure remove time *)
+let (_, remove_time) = measure_remove_time trie keys in
+let remove_time_str = Printf.sprintf "Remove words: %f seconds\n" remove_time in
+
+(* Combine results *)
+  let results = add_time_str ^ search_time_str ^ remove_time_str ^ "\n"in
+
+  (* Write results to a file *)
+  append_results_to_file "tests/results_PRE.txt" results
+
+  (* let trie = List.fold_left (fun acc s -> create_prefix_tree  s acc) Trie.empty keys  in
+   let word = "evaluation" in 
     let explode s = 
       List.init (String.length s) (String.get s) in 
       let nboom = explode word in
@@ -194,7 +263,7 @@ let () =
   let boom = explode w2 in
   let trie = Trie.remove boom trie in
   let rem = Trie.mem boom trie in
-  Printf.printf "Word %s was found: %b.\n Word %s was removed:%b\n" word found w2 (not rem);
+  Printf.printf "Word %s was found: %b.\n Word %s was removed:%b\n" word found w2 (not rem); *)
 
 
   

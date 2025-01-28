@@ -1,6 +1,5 @@
 (executables
- (public_names PAVL PRBT PPrefT PatrT PatriciaT  TestGen Read_File ) 
- (names avl rbt preft patricia pati testGen read_file)
- (libraries str ocamlgraph graphics)
- )
+ (public_names PAVL PRBT PPrefT  PatriciaT  TestGen Read_File ) 
+ (names avl rbt preft patricia  testGen read_file)
+ (libraries str ocamlgraph graphics unix))
  (env (dev (flags :standard -warn-error -26-32-34-27)))
