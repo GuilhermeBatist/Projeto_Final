@@ -159,9 +159,14 @@ let rec search x = function
     else
       false
 
-
-let read_words_from_file filename =
-        let ic = open_in filename in
+(* Function to read words from files *)
+(**
+@param filenames: the name of the files
+@return: the list of words
+*)
+let read_words_from_files filenames =
+  let read_words_from_file filename =
+      let ic = open_in filename in
         let rec loop acc =
             try
                 let line = input_line ic in
@@ -171,6 +176,8 @@ let read_words_from_file filename =
                 List.rev acc
         in
         loop []
+      in
+      List.flatten (List.map read_words_from_file filenames)
 
 
  (*----------------------------BEGIN DRAW THE PATRICIA TREE-----------------------------------------------------*)
@@ -270,24 +277,24 @@ let measure_remove_time tree words =
 
 (* Main function to create a graph from the Patricia tree and output it to a file *)
 let () = 
-  let keys = read_words_from_file "tests/Joey@fakeplagio-palavras.txt" in
+  let keys = read_words_from_files ["tests/Joey@fakeplagio-palavras.txt";"tests/SW_A_NEW_HOPE_palavras.txt"] in
   (* Measure add time *)
   let (tree, add_time) = measure_add_time keys in
-  let add_time_str = Printf.sprintf "Time taken to add words: %f seconds\n" add_time in
+  let add_time_str = Printf.sprintf "Add words: %f seconds\n" add_time in
 
   (* Measure search time *)
   let search_time = measure_search_time tree keys in
-  let search_time_str = Printf.sprintf "Time taken to search words: %f seconds\n" search_time in
+  let search_time_str = Printf.sprintf "Search words: %f seconds\n" search_time in
 
   (* Measure remove time *)
   let (_, remove_time) = measure_remove_time tree keys in
-  let remove_time_str = Printf.sprintf "Time taken to remove words: %f seconds\n" remove_time in
+  let remove_time_str = Printf.sprintf "Remove words: %f seconds\n" remove_time in
 
   (* Combine results *)
   let results = add_time_str ^ search_time_str ^ remove_time_str ^ "\n"in
 
   (* Append results to a file *)
-  append_results_to_file "tests/results_patricia.txt" results
+  append_results_to_file "results/results_patricia_normal_docs.txt" results
 
 
 

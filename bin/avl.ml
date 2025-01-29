@@ -1,5 +1,5 @@
 (* Import the Graph module *)
-open Graph
+(* open Graph *)
 
 (* Define the AVL tree data structure *)
 type 'a avl =
@@ -15,7 +15,7 @@ let height = function
 let node v l r =
   Node (v, (1 + max (height l) (height r)), l, r)(*isto vai para apendice*)
 
-
+(*
 (* Define the graph module for visualization *)
 module G = Imperative.Digraph.Concrete(struct
   type t = int
@@ -59,7 +59,7 @@ let draw_avl_tree tree n=
   Dot.output_graph oc g;
   close_out oc;
   ignore (Sys.command ("dot -Tpng dot/avl_tree.dot -o img/avl/avl_test_"^ string_of_int(n) ^".png"))
-
+*)
 (* Function to balance the AVL tree during insertion or deletion *)
 (**
   @param v: the value of the node
@@ -178,10 +178,7 @@ let read_keys_from_file filename =
   loop []
 (*------------------------------------------BEGIN TESTS-------------------------------------------------------------------------------*)
 (* Function to append results to a file *)
-(**
-@param filename: the name of the file
-@param results: the results to be appended to the file
-*)
+
 let append_results_to_file filename results =
   let oc = open_out_gen [Open_creat; Open_text; Open_append] 0o666 filename in
   output_string oc results;
@@ -236,7 +233,7 @@ let measure_remove_time tree elements =
 
  (* Main function to measure and append results to a file *)
 let () = 
-let elements = read_keys_from_file "tests/Joey@fakeplagio-palavras.txt" in
+let elements = read_keys_from_file "tests/Gen_nums_50000.txt" in
 (* Measure add time *)
 let (tree, add_time) = measure_add_time elements in
 let add_time_str = Printf.sprintf "Add elements: %f seconds\n" add_time in
@@ -253,4 +250,4 @@ let remove_time_str = Printf.sprintf "Remove elements: %f seconds\n" remove_time
 let results = add_time_str ^ search_time_str ^ remove_time_str ^ "\n" in
 
 (* Append results to a file *)
-append_results_to_file "tests/results_avl.txt" results
+append_results_to_file "results/results_avl_50000.txt" results

@@ -1,0 +1,112 @@
+Add elements: 0.000290 seconds
+Search elements: 0.000086 seconds
+Remove elements: 0.000301 seconds
+
+Add elements: 0.000333 seconds
+Search elements: 0.000151 seconds
+Remove elements: 0.000301 seconds
+
+Add elements: 0.000399 seconds
+Search elements: 0.000118 seconds
+Remove elements: 0.000311 seconds
+
+Add elements: 0.000387 seconds
+Search elements: 0.000112 seconds
+Remove elements: 0.000319 seconds
+
+Add elements: 0.000643 seconds
+Search elements: 0.000110 seconds
+Remove elements: 0.000411 seconds
+
+Add elements: 0.000427 seconds
+Search elements: 0.000106 seconds
+Remove elements: 0.000412 seconds
+
+Add elements: 0.000822 seconds
+Search elements: 0.000331 seconds
+Remove elements: 0.000654 seconds
+
+Add elements: 0.000351 seconds
+Search elements: 0.000105 seconds
+Remove elements: 0.000264 seconds
+
+Add elements: 0.000741 seconds
+Search elements: 0.001158 seconds
+Remove elements: 0.000687 seconds
+
+Add elements: 0.000416 seconds
+Search elements: 0.000111 seconds
+Remove elements: 0.000273 seconds
+
+Add elements: 0.000357 seconds
+Search elements: 0.000094 seconds
+Remove elements: 0.000264 seconds
+
+Add elements: 0.000480 seconds
+Search elements: 0.000116 seconds
+Remove elements: 0.000282 seconds
+
+Add elements: 0.000343 seconds
+Search elements: 0.000101 seconds
+Remove elements: 0.000285 seconds
+
+Add elements: 0.000316 seconds
+Search elements: 0.000090 seconds
+Remove elements: 0.000260 seconds
+
+Add elements: 0.000321 seconds
+Search elements: 0.000089 seconds
+Remove elements: 0.000297 seconds
+
+Add elements: 0.000573 seconds
+Search elements: 0.000125 seconds
+Remove elements: 0.000433 seconds
+
+Add elements: 0.000479 seconds
+Search elements: 0.000116 seconds
+Remove elements: 0.000331 seconds
+
+Add elements: 0.000407 seconds
+Search elements: 0.000123 seconds
+Remove elements: 0.000505 seconds
+
+Add elements: 0.000394 seconds
+Search elements: 0.000091 seconds
+Remove elements: 0.000294 seconds
+
+Add elements: 0.000897 seconds
+Search elements: 0.002099 seconds
+Remove elements: 0.001048 seconds
+
+Add elements: 0.000527 seconds
+Search elements: 0.000167 seconds
+Remove elements: 0.000494 seconds
+
+Add elements: 0.000403 seconds
+Search elements: 0.000114 seconds
+Remove elements: 0.000458 seconds
+
+Add elements: 0.000458 seconds
+Search elements: 0.000142 seconds
+Remove elements: 0.000391 seconds
+
+Add elements: 0.000547 seconds
+Search elements: 0.000111 seconds
+Remove elements: 0.000352 seconds
+
+Add elements: 0.000320 seconds
+Search elements: 0.000089 seconds
+Remove elements: 0.000256 seconds
+
+Add elements: 0.000396 seconds
+Search elements: 0.000096 seconds
+Remove elements: 0.000279 seconds
+
+Add elements: 0.000541 seconds
+Search elements: 0.000127 seconds
+Remove elements: 0.000344 seconds
+
+Add elements: 0.000350 seconds
+Search elements: 0.000095 seconds
+Remove elements: 0.000315 seconds
+

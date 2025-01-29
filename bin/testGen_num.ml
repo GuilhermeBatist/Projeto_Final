@@ -1,7 +1,15 @@
+(*
+  This script generates a file with n random integers between 0 and upper_bound.
+  The user is prompted to insert the number of integers to generate.
+*)
+(**
+@param n: the number of integers to generate
+@return: a list of n random integers between 0 and upper_bound
+*)
 let gen_tests n =
   let () = Random.self_init () in
-  let upper_bound = 250 in
-  let ht = Hashtbl.create 100 in  
+  let upper_bound = 10000000 in
+  let ht = Hashtbl.create 1000000 in  
   let rec aux i acc =
     if i = n then acc
     else 
@@ -19,4 +27,4 @@ let print_to_file f lst =
 let () =
   Printf.printf "Please insert the number of ints you want to generate:\n";
   flush stdout;
-  Scanf.scanf " %d" (fun n -> print_to_file "tests/output.txt" @@ gen_tests n)
+  Scanf.scanf " %d" (fun n -> print_to_file ("tests/Gen_nums_" ^ string_of_int n ^ ".txt")  @@ gen_tests n)

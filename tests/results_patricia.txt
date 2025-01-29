@@ -1,3 +1,0 @@
-Time taken to add words: 0.008815 seconds
-Time taken to search words: 0.019352 seconds
-Time taken to remove words: 0.023436 seconds

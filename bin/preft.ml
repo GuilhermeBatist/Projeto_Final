@@ -100,8 +100,21 @@ let read_words_from_file filename =
     loop []
 
 (* Function to read keys from a file, converting each word into a list of characters *)
-let read_keys_from_file filename =  
-  let words = read_words_from_file filename in
+
+let read_words_from_files filenames =
+  let read_words_from_file filename =
+    let ic = open_in filename in
+    let rec loop acc =
+      try
+        let line = input_line ic in
+        loop (line :: acc)
+      with End_of_file ->
+        close_in ic;
+        List.rev acc
+    in
+    loop []
+  in
+  let words = List.flatten (List.map read_words_from_file filenames) in
   List.map (fun x -> String.to_seq x |> List.of_seq) words
 
 (* Module L implementing the Letter interface for characters *)
@@ -233,7 +246,7 @@ let append_results_to_file filename results =
 
 (* Main function to create a graph from the trie and output it to a file *)
 let () = 
-  let keys = read_keys_from_file "tests/Joey@fakeplagio-palavras.txt" in  (* Removed $/ which seemed like a typo or placeholder *)
+  let keys = read_words_from_files ["tests/Joey@fakeplagio-palavras.txt";"tests/SW_A_NEW_HOPE_palavras.txt"] in  (* Removed $/ which seemed like a typo or placeholder *)
 (* Measure add time *)
 let (trie, add_time) = measure_add_time keys in
 let add_time_str = Printf.sprintf "Add words: %f seconds\n" add_time in
