@@ -1,0 +1,112 @@
+Add words: 49.756082 seconds
+Search words: 22.221685 seconds
+Remove words: 161.748457 seconds
+
+Add words: 45.008169 seconds
+Search words: 28.029687 seconds
+Remove words: 159.635009 seconds
+
+Add words: 43.134201 seconds
+Search words: 24.789240 seconds
+Remove words: 160.795914 seconds
+
+Add words: 43.027403 seconds
+Search words: 23.102024 seconds
+Remove words: 159.401121 seconds
+
+Add words: 42.224355 seconds
+Search words: 22.546006 seconds
+Remove words: 153.856885 seconds
+
+Add words: 41.869724 seconds
+Search words: 22.555782 seconds
+Remove words: 152.317150 seconds
+
+Add words: 44.680375 seconds
+Search words: 22.322023 seconds
+Remove words: 155.227063 seconds
+
+Add words: 42.776711 seconds
+Search words: 22.143272 seconds
+Remove words: 149.982039 seconds
+
+Add words: 42.102455 seconds
+Search words: 22.127512 seconds
+Remove words: 152.507225 seconds
+
+Add words: 42.147600 seconds
+Search words: 22.290334 seconds
+Remove words: 153.019826 seconds
+
+Add words: 41.541064 seconds
+Search words: 22.403586 seconds
+Remove words: 154.230669 seconds
+
+Add words: 42.656486 seconds
+Search words: 21.922844 seconds
+Remove words: 149.511638 seconds
+
+Add words: 42.820172 seconds
+Search words: 22.531175 seconds
+Remove words: 153.440901 seconds
+
+Add words: 42.535491 seconds
+Search words: 22.704142 seconds
+Remove words: 155.337146 seconds
+
+Add words: 42.339230 seconds
+Search words: 22.552220 seconds
+Remove words: 155.430855 seconds
+
+Add words: 42.169265 seconds
+Search words: 22.310279 seconds
+Remove words: 151.075700 seconds
+
+Add words: 42.541022 seconds
+Search words: 23.059637 seconds
+Remove words: 152.911158 seconds
+
+Add words: 42.785681 seconds
+Search words: 21.986920 seconds
+Remove words: 153.045277 seconds
+
+Add words: 42.766658 seconds
+Search words: 22.360693 seconds
+Remove words: 155.390878 seconds
+
+Add words: 42.548655 seconds
+Search words: 22.796912 seconds
+Remove words: 146.680954 seconds
+
+Add words: 42.453708 seconds
+Search words: 21.943796 seconds
+Remove words: 153.819489 seconds
+
+Add words: 42.170504 seconds
+Search words: 22.071464 seconds
+Remove words: 153.971649 seconds
+
+Add words: 42.109130 seconds
+Search words: 22.893736 seconds
+Remove words: 153.912562 seconds
+
+Add words: 42.431992 seconds
+Search words: 22.116501 seconds
+Remove words: 148.128155 seconds
+
+Add words: 43.015169 seconds
+Search words: 22.379315 seconds
+Remove words: 154.606141 seconds
+
+Add words: 42.451832 seconds
+Search words: 22.271709 seconds
+Remove words: 153.593399 seconds
+
+Add words: 42.266076 seconds
+Search words: 22.645152 seconds
+Remove words: 153.993531 seconds
+
+Add words: 42.263850 seconds
+Search words: 22.394684 seconds
+Remove words: 147.724384 seconds
+

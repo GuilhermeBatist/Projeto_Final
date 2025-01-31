@@ -1,0 +1,4 @@
+Add words: 0.003416 seconds
+Search words: 0.001843 seconds
+Remove words: 0.003158 seconds
+

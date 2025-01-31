@@ -277,7 +277,7 @@ let measure_remove_time tree words =
 
 (* Main function to create a graph from the Patricia tree and output it to a file *)
 let () = 
-  let keys = read_words_from_files ["tests/Joey@fakeplagio-palavras.txt";"tests/SW_A_NEW_HOPE_palavras.txt"] in
+  let keys = read_words_from_files ["tests/Gen_strings_100000.txt"] in
   (* Measure add time *)
   let (tree, add_time) = measure_add_time keys in
   let add_time_str = Printf.sprintf "Add words: %f seconds\n" add_time in
@@ -294,7 +294,7 @@ let () =
   let results = add_time_str ^ search_time_str ^ remove_time_str ^ "\n"in
 
   (* Append results to a file *)
-  append_results_to_file "results/results_patricia_normal_docs.txt" results
+  append_results_to_file "results/results_pat_100000.txt" results
 
 
 

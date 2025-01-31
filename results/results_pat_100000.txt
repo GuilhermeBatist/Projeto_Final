@@ -1,0 +1,57 @@
+Add words: 366.667550 seconds
+Search words: 258.214256 seconds
+Remove words: 1019.117981 seconds
+
+Add words: 342.773663 seconds
+Search words: 252.687871 seconds
+Remove words: 1014.453347 seconds
+
+Add words: 347.606251 seconds
+Search words: 244.634021 seconds
+Remove words: 1012.903117 seconds
+
+Add words: 353.041057 seconds
+Search words: 247.026509 seconds
+Remove words: 1023.504882 seconds
+
+Add words: 351.474876 seconds
+Search words: 257.716139 seconds
+Remove words: 1017.923721 seconds
+
+Add words: 356.530702 seconds
+Search words: 263.427149 seconds
+Remove words: 1031.072930 seconds
+
+Add words: 350.544970 seconds
+Search words: 260.658261 seconds
+Remove words: 1025.296908 seconds
+
+Add words: 348.134094 seconds
+Search words: 259.375673 seconds
+Remove words: 1029.859707 seconds
+
+Add words: 348.624597 seconds
+Search words: 251.070102 seconds
+Remove words: 1022.300816 seconds
+
+Add words: 351.504082 seconds
+Search words: 243.367682 seconds
+Remove words: 1017.679672 seconds
+
+Add words: 350.753622 seconds
+Search words: 246.943075 seconds
+Remove words: 1020.171779 seconds
+
+Add words: 352.088360 seconds
+Search words: 256.891875 seconds
+Remove words: 1086.972601 seconds
+
+Add words: 352.853307 seconds
+Search words: 263.495217 seconds
+Remove words: 1031.032426 seconds
+
+Add words: 354.258168 seconds
+Search words: 264.616072 seconds
+Remove words: 1033.918027 seconds
+
+14

@@ -1,0 +1,112 @@
+Add words: 0.145576 seconds
+Search words: 0.040768 seconds
+Remove words: 0.100467 seconds
+
+Add words: 0.155572 seconds
+Search words: 0.048285 seconds
+Remove words: 0.129267 seconds
+
+Add words: 0.191246 seconds
+Search words: 0.057809 seconds
+Remove words: 0.136620 seconds
+
+Add words: 0.176599 seconds
+Search words: 0.049241 seconds
+Remove words: 0.132587 seconds
+
+Add words: 0.178046 seconds
+Search words: 0.069741 seconds
+Remove words: 0.157609 seconds
+
+Add words: 0.167483 seconds
+Search words: 0.053888 seconds
+Remove words: 0.132884 seconds
+
+Add words: 0.167166 seconds
+Search words: 0.048088 seconds
+Remove words: 0.111228 seconds
+
+Add words: 0.140904 seconds
+Search words: 0.041474 seconds
+Remove words: 0.098491 seconds
+
+Add words: 0.159093 seconds
+Search words: 0.077339 seconds
+Remove words: 0.140632 seconds
+
+Add words: 0.230091 seconds
+Search words: 0.051420 seconds
+Remove words: 0.131930 seconds
+
+Add words: 0.194017 seconds
+Search words: 0.084168 seconds
+Remove words: 0.135796 seconds
+
+Add words: 0.141535 seconds
+Search words: 0.045748 seconds
+Remove words: 0.102516 seconds
+
+Add words: 0.156630 seconds
+Search words: 0.046651 seconds
+Remove words: 0.124011 seconds
+
+Add words: 0.170129 seconds
+Search words: 0.043655 seconds
+Remove words: 0.104976 seconds
+
+Add words: 0.173360 seconds
+Search words: 0.043942 seconds
+Remove words: 0.174236 seconds
+
+Add words: 0.255232 seconds
+Search words: 0.053749 seconds
+Remove words: 0.131183 seconds
+
+Add words: 0.190768 seconds
+Search words: 0.044665 seconds
+Remove words: 0.118300 seconds
+
+Add words: 0.221560 seconds
+Search words: 0.061113 seconds
+Remove words: 0.151374 seconds
+
+Add words: 0.196716 seconds
+Search words: 0.066744 seconds
+Remove words: 0.150008 seconds
+
+Add words: 0.165395 seconds
+Search words: 0.044889 seconds
+Remove words: 0.107621 seconds
+
+Add words: 0.171371 seconds
+Search words: 0.089241 seconds
+Remove words: 0.243970 seconds
+
+Add words: 0.160123 seconds
+Search words: 0.048972 seconds
+Remove words: 0.110471 seconds
+
+Add words: 0.159547 seconds
+Search words: 0.044528 seconds
+Remove words: 0.123161 seconds
+
+Add words: 0.152188 seconds
+Search words: 0.043661 seconds
+Remove words: 0.110071 seconds
+
+Add words: 0.163472 seconds
+Search words: 0.044461 seconds
+Remove words: 0.107841 seconds
+
+Add words: 0.145441 seconds
+Search words: 0.044332 seconds
+Remove words: 0.104582 seconds
+
+Add words: 0.156693 seconds
+Search words: 0.042304 seconds
+Remove words: 0.121725 seconds
+
+Add words: 0.141593 seconds
+Search words: 0.043435 seconds
+Remove words: 0.113093 seconds
+
