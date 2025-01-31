@@ -54,4 +54,59 @@ Add words: 354.258168 seconds
 Search words: 264.616072 seconds
 Remove words: 1033.918027 seconds
 
-14
+Add words: 368.981244 seconds
+Search words: 272.708922 seconds
+Remove words: 1072.371005 seconds
+
+Add words: 364.604542 seconds
+Search words: 271.281823 seconds
+Remove words: 1041.939121 seconds
+
+Add words: 369.473178 seconds
+Search words: 273.990453 seconds
+Remove words: 1049.786678 seconds
+
+Add words: 364.140374 seconds
+Search words: 272.467327 seconds
+Remove words: 1033.177384 seconds
+
+Add words: 367.892079 seconds
+Search words: 271.127709 seconds
+Remove words: 1048.849784 seconds
+
+Add words: 358.397574 seconds
+Search words: 267.687037 seconds
+Remove words: 1045.208066 seconds
+
+Add words: 351.652149 seconds
+Search words: 266.475092 seconds
+Remove words: 1043.612258 seconds
+
+Add words: 345.647656 seconds
+Search words: 255.164935 seconds
+Remove words: 1031.694689 seconds
+
+Add words: 348.944886 seconds
+Search words: 253.507391 seconds
+Remove words: 1035.691310 seconds
+
+Add words: 356.158123 seconds
+Search words: 245.408483 seconds
+Remove words: 1025.202144 seconds
+
+Add words: 362.979788 seconds
+Search words: 247.965026 seconds
+Remove words: 1031.920618 seconds
+
+Add words: 363.295767 seconds
+Search words: 252.337120 seconds
+Remove words: 1032.687053 seconds
+
+Add words: 362.681928 seconds
+Search words: 258.472306 seconds
+Remove words: 1020.474654 seconds
+
+Add words: 362.004596 seconds
+Search words: 269.909880 seconds
+Remove words: 1028.541039 seconds
+
