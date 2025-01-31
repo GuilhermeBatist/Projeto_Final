@@ -222,3 +222,6 @@ Add elements: 0.008028 seconds
 Search elements: 0.002075 seconds
 Remove elements: 0.009673 seconds
 
+Average Add words: 0.006801 seconds
+Average Search words: 0.002854 seconds
+Average Remove words: 0.012785 seconds

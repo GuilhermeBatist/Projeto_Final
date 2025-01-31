@@ -246,7 +246,7 @@ let append_results_to_file filename results =
 
 (* Main function to create a graph from the trie and output it to a file *)
 let () = 
-  let keys = read_words_from_files ["tests/Gen_strings_100000.txt"] in  (* Removed $/ which seemed like a typo or placeholder *)
+  let keys = read_words_from_files ["tests/Joey@fakeplagio-palavras.txt";"tests/SW_A_NEW_HOPE_palavras.txt"] in  (* Removed $/ which seemed like a typo or placeholder *)
 (* Measure add time *)
 let (trie, add_time) = measure_add_time keys in
 let add_time_str = Printf.sprintf "Add words: %f seconds\n" add_time in

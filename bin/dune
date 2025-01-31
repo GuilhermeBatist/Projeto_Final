@@ -1,5 +1,5 @@
 (executables
- (public_names PAVL PRBT PPrefT  PatriciaT  TestGenN testGenS Read_File  ) 
- (names avl rbt preft patricia testGen_num testGen_String  read_file )
+ (public_names PAVL PRBT PPrefT  PatriciaT  TestGenN testGenS Read_File  E&P) 
+ (names avl rbt preft patricia testGen_num testGen_String  read_file extractandprocess) 
  (libraries str ocamlgraph graphics unix))
  (env (dev (flags :standard -warn-error -26-32-34-27)))

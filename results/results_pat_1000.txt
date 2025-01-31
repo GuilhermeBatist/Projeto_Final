@@ -110,3 +110,6 @@ Add words: 0.005534 seconds
 Search words: 0.005970 seconds
 Remove words: 0.013121 seconds
 
+Average Add words: 0.009975 seconds
+Average Search words: 0.010732 seconds
+Average Remove words: 0.022407 seconds
